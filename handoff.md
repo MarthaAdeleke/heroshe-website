@@ -13,8 +13,10 @@ redesign file is the more current/correct one — the "Who We Serve" row there s
 audited the two files against each other, so assume other screens may have drifted too —
 check the redesign file first before treating `Portfolio` as authoritative on any detail.
 
-**Not a git repo yet.** Nothing here is under version control. That's the single biggest
-gap before this goes further — see Next Steps.
+**Under version control as of the initial commit** (`9ca13cf`). Note that everything
+predating that commit has no history — the whole build landed as one import, so `git log`
+won't explain why any individual pre-existing decision was made. This file is the record
+for those; keep using it for decisions that the diff alone won't convey.
 
 ---
 
@@ -69,9 +71,8 @@ plain `.section-head` at the top of the (white) offices section, doing triple du
 page's H1, a one-line "why you'd be here" blurb, and — restoring the one thing worth
 keeping from the form — a `mailto:helpdesk@heroshe.com` / `tel:` line so the page still has
 *some* direct way to reach the company. Office-card phone numbers are `tel:` links too.
-(The cut hero/form markup isn't preserved anywhere — this project has no git history yet,
-see the version-control note at the top of this file — so a future contact form would be
-built fresh rather than resurrected.)
+(The cut hero/form markup predates the initial commit, so it isn't recoverable from
+`git log` — a future contact form would be built fresh rather than resurrected.)
 
 ---
 
@@ -82,8 +83,8 @@ index.html, about.html, ship-for-me.html,       ← one file per page, semantic 
 buy-for-me.html, buy-for-others.html,             BEM-ish class names, no inline styles
 fulfil-for-me.html                                except the occasional footer-column width
 
-styles.css   (1984 lines)                        ← single shared stylesheet
-site.js      (73 lines)                          ← mobile drawer + Products dropdown +
+styles.css   (~2250 lines)                       ← single shared stylesheet
+site.js      (~95 lines)                         ← mobile drawer + Products dropdown +
                                                      footer-accordion behavior (every page),
                                                      plus Pricing's mobile plan-tabs (guarded,
                                                      no-ops on every other page)
@@ -386,25 +387,22 @@ starting a second one on the same port).
 
 Roughly in priority order:
 
-1. **Put this under version control.** There is no git history at all right now — every
-   change across every page lives only in the current file state. First real risk to
-   close.
-2. **Audit `Portfolio` against `Heroshe Website Redesign`** (see the note at the top).
+1. **Audit `Portfolio` against `Heroshe Website Redesign`** (see the note at the top).
    Every page here was built from `Portfolio`; the redesign file is newer where they
    overlap. Until someone diffs them, any page could be carrying the same class of
    mismatch the "You!" wordmark did.
-3. **Real FAQ copy — 22 answers across all four service pages** (see §4). Every question
+2. **Real FAQ copy — 22 answers across all four service pages** (see §4). Every question
    on a page currently shows that page's single Figma-supplied answer. Buy for Me is the
    urgent one: it repeats Ship for Me's pricing answer, so it's showing factually wrong
    content, not just placeholder content.
-4. **Wire the remaining CTAs and footer/social links** to real destinations once they
+3. **Wire the remaining CTAs and footer/social links** to real destinations once they
    exist (signup flow, calendar booking, social profiles).
-5. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
+4. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
    currently only has About and Contact Us — see §4).
-6. **Get a mobile Figma frame for the four service pages, About, Contact Us, and
+5. **Get a mobile Figma frame for the four service pages, About, Contact Us, and
    Pricing**, or explicit sign-off that the current responsive adaptations (§4) are good
    enough as-is.
-7. **Decide on a real backend/CMS story** if this moves past a static prototype —
+6. **Decide on a real backend/CMS story** if this moves past a static prototype —
    nothing here has any dynamic behavior; it's markup and CSS only. A Contact Us form
    was deliberately left out for exactly this reason (see §1) — revisit it once there's
    a backend able to receive submissions.
