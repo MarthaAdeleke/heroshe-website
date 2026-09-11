@@ -1,0 +1,2246 @@
+/* ============================================================
+   Heroshe — Home page
+   Figma: Portfolio / Home page (node 2686:1385), 1440px frame
+   ============================================================ */
+
+:root {
+  /* Color Role - Light Mode */
+  --on-surface:        #121212;  /* N-800 */
+  --text-subdued:      #5a5a5a;  /* N-600 */
+  --surface:           #fafafa;  /* N-200 */
+  --surface-subdued:   #ebebeb;  /* N-300 */
+  --border:            #d8d8d8;  /* N-400 */
+  --primary:           #f1c34e;
+  --yellow:            #f1c34e;
+  --secondary:         #024052;  /* Teal */
+
+  /* Alert palette */
+  --critical:          #df2a2a;
+  --critical-subdued:  #fceaea;
+  --highlight:         #007ace;
+  --highlight-subdued: #eff6fd;
+  --success:           #00802f;
+  --success-subdued:   #e5f2ea;
+  --warning:           #e4913a;
+  --warning-subdued:   #fae9d8;
+
+  --focus:             #2a9d8f;
+  --chip-text:         #484451;
+
+  --gutter: 88px;
+  --frame: 1440px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-family: 'Onest', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+h1, h2, h3, p, blockquote, figure { margin: 0; }
+strong { font-weight: 600; }
+img { display: block; max-width: 100%; }
+a { color: inherit; text-decoration: none; }
+ul { margin: 0; padding: 0; list-style: none; }
+
+:focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
+
+/* ---------- Shared shell ---------- */
+.header__inner,
+.hero__inner,
+.offerings__inner,
+.stories__inner,
+.footer__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--primary);
+  color: var(--on-surface);
+  border-radius: 4px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  white-space: nowrap;
+  transition: background-color .18s ease, transform .18s ease;
+}
+.btn:hover  { background: #e9b634; }
+.btn:active { transform: translateY(1px); }
+
+.btn--lg { padding: 12px 32px; font-size: 16px; }  /* hero */
+.btn--md { padding:  8px 24px; font-size: 16px; }  /* offerings "Read more" */
+.btn--sm { padding: 12px 32px; font-size: 14px; }  /* header */
+.btn--xs { padding:  8px 20px; font-size: 14px; }  /* footer */
+
+/* ---------- Logo ---------- */
+.logo { display: block; position: relative; overflow: hidden; }
+.logo img {
+  position: absolute;
+  left: -0.01%;
+  top: 8.3%;
+  width: 100.02%;
+  height: 76.95%;
+  max-width: none;
+}
+.logo--header { width: 127px;     height: 24px; }
+.logo--footer { width: 105.833px; height: 20px; }
+
+/* ============================================================
+   Header navigation bar
+   ============================================================ */
+.header { position: relative; z-index: 20; background: var(--secondary); }
+.header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-block: 20px;
+}
+
+.nav-toggle {
+  display: none;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+.nav-toggle img { width: 19.478px; height: 16px; max-width: none; }
+
+.nav { display: flex; align-items: center; gap: 56px; }
+.nav__list { display: flex; align-items: center; gap: 16px; }
+.nav__item { position: relative; display: flex; align-items: center; gap: 8px; }
+.nav__item a,
+.nav__login,
+.nav__trigger {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--surface);
+  transition: color .18s ease;
+}
+.nav__item a:hover, .nav__login:hover, .nav__trigger:hover { color: var(--primary); }
+.nav__chevron { width: 20px; height: 20px; transition: transform .2s ease; }
+.nav__item--w108 { width: 108px; }
+
+.nav__trigger,
+.nav__link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.nav__trigger {
+  padding: 0;
+  border: 0;
+  background: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* Products menu — no open state exists in the Figma file, so this follows the
+   site's own surface/shadow language rather than a supplied design. */
+.navmenu {
+  position: absolute;
+  top: calc(100% + 40px);   /* clears the header's 20px block padding */
+  left: -12px;
+  z-index: 30;
+  min-width: 216px;
+  display: flex;
+  flex-direction: column;
+  padding: 8px;
+  border-radius: 8px;
+  background: var(--surface);
+  box-shadow: 0 12px 32px rgba(0, 13, 16, .18);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.navmenu .navmenu__link {
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--on-surface);
+  white-space: nowrap;
+  transition: background-color .15s ease, color .15s ease;
+}
+.navmenu .navmenu__link:hover { background: var(--highlight-subdued); color: var(--on-surface); }
+.navmenu .navmenu__link[aria-current="page"] { color: var(--highlight); }
+
+.has-menu.is-open > .navmenu {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+.has-menu.is-open > .nav__trigger .nav__chevron { transform: rotate(180deg); }
+
+@media (hover: hover) and (min-width: 901px) {
+  .has-menu:hover > .navmenu { opacity: 1; visibility: visible; transform: none; }
+  .has-menu:hover > .nav__trigger .nav__chevron { transform: rotate(180deg); }
+}
+.nav__actions { display: flex; align-items: center; gap: 40px; }
+
+/* ============================================================
+   Hero
+   ============================================================ */
+.hero {
+  background: var(--secondary);
+  overflow: hidden;
+}
+.hero__inner {
+  position: relative;
+  height: 664px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.hero__left {
+  width: 514px;
+  margin-top: 148px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 24px;
+}
+.hero__text { display: flex; flex-direction: column; gap: 16px; }
+.hero__title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 80px;
+  letter-spacing: -0.64px;
+  color: var(--surface);
+}
+.hero__sub {
+  width: 455px;
+  max-width: 100%;
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.18px;
+  color: var(--surface-subdued);
+}
+
+/* --- Hero visual --- */
+.hero__right {
+  position: absolute;
+  left: 712px;
+  top: 64px;
+  width: 640px;
+  height: 480px;
+}
+.hero__imagegroup {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 0;
+  width: 440px;
+  height: 480px;
+  background: var(--surface-subdued);
+  border-radius: 12px;
+}
+.hero__imageframe {
+  position: absolute;
+  inset: -8px;                 /* the stroke sits outside the image group */
+  border: 8px solid var(--surface-subdued);
+  border-radius: 12px;
+  background: var(--surface-subdued);
+  overflow: hidden;
+}
+.hero__photo {
+  position: absolute;
+  left: -264px;
+  top: -7px;
+  width: 776px;
+  height: 558px;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+.hero__scrim {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 440px;
+  height: 480px;
+  border-radius: 12px;
+  background: #000d10;
+  opacity: .12;
+}
+
+/* --- Floating status cards --- */
+.chip-card {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 7px 0 rgba(0, 13, 16, .05);
+  overflow: hidden;
+}
+.chip-card--ship      { left: 8px;   top: 80px;  width: 224px; }
+.chip-card--buyme     { left: 395px; top: 72px; }
+.chip-card--buyothers { left: 0;     top: 326px; }
+.chip-card--fulfil    { left: 395px; top: 318px; }
+
+.chip-card__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.chip-card__icon--highlight { background: var(--highlight-subdued); }
+.chip-card__icon--critical  { background: var(--critical-subdued); }
+.chip-card__icon--success   { background: var(--success-subdued); }
+.chip-card__icon--warning   { background: var(--warning-subdued); }
+
+.ic { flex: none; max-width: none; }
+.ic--full     { width: 18px;      height: 18px; }
+.ic--delivery { width: 16.663px;  height: 16.663px; }
+.ic--layers   { width: 15.470px;  height: 15.467px; }
+
+.chip-card__body { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; }
+.chip-card--ship   .chip-card__body { width: 141px; }
+.chip-card--buyme  .chip-card__body { width: 169px; }
+.chip-card--fulfil .chip-card__body { width: 161px; }
+.chip-card--buyothers .chip-card__title { white-space: nowrap; }
+.chip-card__label { font-size: 10px; font-weight: 600; line-height: 12px; }
+.chip-card__title { font-size: 12px; font-weight: 600; line-height: 16px; color: var(--text-subdued); }
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 4px;
+  border-radius: 4px;
+  font-size: 8px;
+  line-height: 10px;
+  color: var(--chip-text);
+  white-space: nowrap;
+  font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
+}
+.chip i { width: 4px; height: 4px; border-radius: 8px; }
+.chip--highlight            { background: var(--highlight-subdued); }
+.chip--highlight i          { background: var(--highlight); }
+.chip--critical             { background: var(--critical-subdued); }
+.chip--critical i           { background: var(--critical); }
+.chip--success              { background: var(--success-subdued); }
+.chip--success i            { background: var(--success); }
+.chip--warning              { background: var(--warning-subdued); }
+.chip--warning i            { background: var(--warning); }
+
+/* ============================================================
+   Section heading (shared)
+   ============================================================ */
+.section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+  overflow-wrap: break-word;
+}
+.section-head__title {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 64px;
+  color: var(--on-surface);
+}
+.section-head__sub {
+  max-width: 100%;
+  line-height: 32px;
+  color: var(--text-subdued);
+}
+.section-head--offerings .section-head__sub { width: 544px; font-size: 18px; }
+.section-head--stories   .section-head__sub { width: 591px; font-size: 20px; }
+
+/* Copy that differs between the desktop and mobile Figma frames */
+.m-only { display: none; }
+
+/* ============================================================
+   Our Offerings
+   ============================================================ */
+.offerings { background: var(--surface); }
+.offerings__inner {
+  padding-block: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.offerings__row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.offerings__list {
+  width: 558px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+.offering {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-wrap: break-word;
+}
+.offering__title { font-size: 20px; font-weight: 600; line-height: 32px; color: var(--on-surface); }
+.offering__body  { font-size: 16px; line-height: 28px; color: var(--text-subdued); }
+
+.offerings__figure {
+  position: relative;
+  flex: none;
+  width: 618px;
+  height: 817px;
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.offerings__figure img {
+  position: absolute;
+  left: -111px;
+  top: calc(50% + 5.5px);
+  transform: translateY(-50%);
+  width: 1178px;
+  height: 934px;
+  max-width: none;
+  object-fit: cover;
+}
+
+/* ============================================================
+   Real Stories, Real Success
+   ============================================================ */
+.stories {
+  background: var(--highlight-subdued);
+  margin-bottom: 160px;
+}
+.stories__inner {
+  padding-block: 64px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.stories__grid {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.stories__col {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+
+.tcard {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+}
+.tcard__quote {
+  font-size: 14px;
+  line-height: 28px;
+  color: var(--text-subdued);
+  overflow-wrap: break-word;
+}
+.tcard__author { display: flex; align-items: center; gap: 8px; }
+.tcard__name   { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--on-surface); }
+
+.avatar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 24px;
+}
+.avatar--sq4 { border-radius: 4px; }
+
+/* ============================================================
+   Footer
+   ============================================================ */
+.footer { background: var(--secondary); overflow: hidden; }
+.footer__inner {
+  padding-block: 64px;
+  display: flex;
+  align-items: flex-start;
+  gap: 120px;
+}
+
+.footer__brand {
+  width: 359px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+}
+.footer__brandtop { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+.footer__blurb {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--surface-subdued);
+  overflow-wrap: break-word;
+}
+
+.footer__col {
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--surface-subdued);
+  overflow-wrap: break-word;
+}
+.footer__heading {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  width: 100%;
+  font-weight: 600;
+  list-style: none;
+  cursor: default;
+}
+.footer__heading::-webkit-details-marker { display: none; }
+.footer__heading > span { flex: 1 1 0; min-width: 0; }
+.footer__chev {
+  display: none;
+  flex: none;
+  width: 16px;
+  height: 16px;
+  transition: transform .2s ease;
+}
+.footer__links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.footer__col a { transition: color .18s ease; }
+.footer__col a:hover { color: var(--primary); }
+
+/* ============================================================
+   About Us page — Figma "About Us" frame (1440px, node 2686:1703)
+   ============================================================ */
+
+/* ---- Hero ---- */
+.ahero { background: var(--secondary); overflow: hidden; }
+.ahero__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+  position: relative;
+  height: 664px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+/* The Figma frame centres both groups 28px above the section's midpoint */
+.ahero__left,
+.ahero__right { margin-bottom: 56px; }
+
+.ahero__left {
+  width: 567px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  overflow-wrap: break-word;
+}
+.ahero__eyebrow {
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.18px;
+  color: var(--surface-subdued);
+}
+.ahero__title {
+  width: 616px;
+  max-width: none;
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 80px;
+  letter-spacing: -0.64px;
+  color: var(--surface);
+}
+
+.ahero__right { flex: none; width: 456px; height: 480px; }
+.ahero__frame {
+  box-sizing: content-box;     /* the 8px stroke sits outside the 456x480 group */
+  width: 456px;
+  height: 480px;
+  margin: -8px;
+  border: 8px solid var(--surface-subdued);
+  border-radius: 12px;
+  background: var(--surface-subdued);
+  overflow: hidden;
+  position: relative;
+}
+.ahero__photo {
+  position: absolute;
+  left: -19px;
+  top: -11px;
+  width: 670px;
+  height: 534px;
+  max-width: none;
+  object-fit: cover;
+  pointer-events: none;
+}
+
+/* ---- Two-column content rows ---- */
+.about { background: var(--surface); }
+.about__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+}
+
+.arow { display: flex; align-items: flex-start; }
+.arow__label {
+  width: 537px;          /* holds every right-hand column on one x-axis */
+  flex: none;
+  padding-right: 24px;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 64px;
+  color: var(--on-surface);
+}
+.arow__body { flex: 1 1 0; min-width: 0; }
+
+.prose {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.18px;
+  color: var(--on-surface);
+  overflow-wrap: break-word;
+}
+.prose__block p { margin: 0; }   /* the two sentences sit tight inside a block */
+
+/* ---- Core values ---- */
+.values {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.value { display: flex; align-items: center; gap: 12px; }
+.value__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  overflow: hidden;
+}
+.value__icon img { width: 22.693px; height: 22.693px; max-width: none; }
+.value__text {
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.18px;
+  color: var(--on-surface);
+}
+
+/* ---- By the numbers ---- */
+.stats {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  align-content: flex-start;
+  justify-content: space-between;
+  row-gap: 48px;
+}
+.stat {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+  border-radius: 8px;
+  background: var(--surface);
+  overflow: hidden;
+  white-space: nowrap;
+}
+.stat--fixed { width: 336px; flex: none; }
+.stat__value {
+  font-size: 96px;
+  font-weight: 700;
+  line-height: 96px;
+  color: var(--on-surface);
+}
+.stat__label {
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--text-subdued);
+}
+.stat__label--wrap { width: 100%; white-space: normal; overflow-wrap: break-word; }
+
+/* ---- Leadership ---- */
+.leaders {
+  max-width: 413px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 48px;
+}
+.leader { display: flex; align-items: center; gap: 16px; }
+.leader__avatar {
+  position: relative;
+  flex: none;
+  width: 100px;
+  height: 100px;
+  border-radius: 64px;
+  background: #d9d9d9;
+  overflow: hidden;
+}
+.leader__photo { position: absolute; max-width: none; object-fit: cover; pointer-events: none; }
+.leader__photo--osinachi { left: -14px; top:  0;   width: 128px; height: 128px; }
+.leader__photo--chichi   { left:  -6px; top:  0;   width: 106px; height: 106px; }
+.leader__photo--joseph   { left: -38px; top: -8px; width: 166px; height: 208px; }
+
+.leader__meta {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--on-surface);
+  overflow-wrap: break-word;
+}
+.leader__name { font-size: 24px; font-weight: 700; line-height: 32px; }
+.leader__role { font-size: 16px; line-height: 24px; }
+
+/* ---- Team gallery ---- */
+.gallery { background: var(--surface); }
+.gallery__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.gallery__title {
+  width: 100%;
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 64px;
+  text-align: center;
+  color: var(--on-surface);
+  overflow-wrap: break-word;
+}
+.gallery__grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.gallery__row { display: flex; align-items: center; gap: 24px; }
+
+.shot {
+  position: relative;
+  height: 420px;
+  border-radius: 12px;
+  background: var(--surface-subdued);
+  overflow: hidden;
+}
+.shot--wide  { width: 100%; }
+.shot--left  { width: 720px; flex: none; }
+.shot--right { flex: 1 1 0; min-width: 0; }
+
+.shot__img { position: absolute; max-width: none; object-fit: cover; pointer-events: none; }
+.shot__img--wide  { left:   0;   top: -108px; width: 1266px; height: 844px; }
+.shot__img--left  { left: -19px; top:  -61px; width:  744px; height: 498px; }
+.shot__img--right { left: -50px; top:    3px; width:  621px; height: 414px; }
+
+.shot__scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: #000d10;
+  opacity: .12;
+}
+
+/* ============================================================
+   Ship for Me page — Figma "Ship for Me" frame (1440px, node 2686:2378)
+   ============================================================ */
+
+/* ---- Hero (shares the About hero shell) ---- */
+.shero__left  { width: 613px; gap: 24px; }
+.shero__text  { display: flex; flex-direction: column; gap: 16px; width: 100%; }
+.shero__title {
+  font-size: 64px;
+  font-weight: 700;
+  line-height: 80px;
+  letter-spacing: -0.64px;
+  color: var(--surface);
+}
+.shero__sub {
+  font-size: 18px;
+  line-height: 32px;
+  letter-spacing: 0.18px;
+  color: var(--surface-subdued);
+}
+.shero__actions { display: flex; align-items: flex-start; gap: 24px; }
+.shero__photo   { left: -186px; top: -24px; width: 790px; height: 528px; }
+
+/* ---- Who we serve ---- */
+.serve { background: var(--surface); }
+.serve__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.serve__head { width: 1050px; max-width: 100%; }
+.serve__head .section-head__sub { width: 728px; font-size: 18px; }
+
+.serve__grid {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.serve__item {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+}
+.serve__frame {
+  position: relative;
+  display: block;
+  width: 100%;
+  /* Must stay the Figma card shape at every width, not a fixed height — the
+     photo crops below are percentages of this box and only hold their aspect
+     ratio while the box does. A fixed height turns the card landscape at
+     in-between widths (2 columns ~600px, 3 columns ~1120px) and stretches the
+     photos with it. */
+  aspect-ratio: 197.33 / 292;
+  border-radius: 8px;
+  background: var(--surface-subdued);
+  overflow: hidden;
+}
+.serve__img { position: absolute; max-width: none; }
+/* Crop values carried over from the Figma image fills. These are independent
+   width/height percentages of the frame, so they only hold each photo's true
+   aspect ratio while the frame keeps the Figma card shape — hence the
+   aspect-ratio above rather than a fixed height. Give the frame a fixed height
+   at any breakpoint and the photos stretch with the card. */
+.serve__img--social     { left: -12.62%; top:  -1.71%; width: 158.07%; height: 140.41%; }
+.serve__img--personal   { left: -22.39%; top: -16.68%; width: 166.16%; height: 168.99%; }
+.serve__img--msme       { left: -16.07%; top:  -4.57%; width: 228.93%; height: 111.20%; }
+.serve__img--influencer { left: -28.43%; top:  -0.01%; width: 222.34%; height: 100.01%; }
+.serve__img--store      { left: -20.03%; top:  -0.68%; width: 242.42%; height: 115.82%; }
+
+/* The "You!" is an exported wordmark, not live text. It was originally built
+   as Onest + an offset text-shadow, which can never match: the real artwork
+   has a light knockout outline between the front letters and their shadow,
+   and custom kerning. Figma positions it 6.87px left of centre. */
+.serve__frame--you { display: flex; align-items: center; justify-content: center; }
+.serve__you {
+  /* Figma: 167px wide in a 197.33px card, offset 6.87px left of centre. Kept as
+     percentages so it tracks the card at every width instead of needing a fixed
+     size per breakpoint. */
+  width: 84.63%;
+  height: auto;
+  transform: translateX(-4.11%);
+}
+.serve__label {
+  width: 100%;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  color: var(--text-subdued);
+  overflow-wrap: break-word;
+}
+
+/* ---- Everything you need ---- */
+.features { background: var(--surface); }
+.features__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.features__head .section-head__sub { width: 684px; font-size: 18px; }
+
+/* "Stress-Free" is set in the page colour and overlaid with a tilted teal copy */
+.rotword { position: relative; display: inline-block; }
+.rotword__ghost { color: transparent; }
+.rotword__ink {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: rotate(-4deg);
+  transform-origin: center;
+  color: var(--focus);
+}
+
+.features__grid {
+  width: 100%;
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+}
+.fcard {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 48px 40px 0;
+  border-radius: 12px;
+  background: #f7f3e6;
+  overflow: hidden;
+}
+.fcard__text {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 12px;
+  overflow-wrap: break-word;
+}
+.fcard__title { font-size: 24px; font-weight: 600; line-height: 32px; color: var(--on-surface); }
+.fcard__body  { font-size: 16px; line-height: 28px; color: var(--text-subdued); }
+
+.phone {
+  position: relative;
+  flex: none;
+  width: 325px;
+  max-width: 100%;
+  height: 381px;
+  border: 4px solid var(--on-surface);
+  border-bottom: 0;
+  border-radius: 24px 24px 0 0;
+}
+.phone--black { border-color: #000; }
+.phone__clip {
+  position: absolute;
+  inset: 0;
+  display: block;
+  border-radius: 20px 20px 0 0;
+  overflow: hidden;
+}
+.phone__img { position: absolute; width: 100%; max-width: none; }
+.phone__img--delivery { left:  0.10%; top: 0.04%; height: 102.13%; }
+.phone__img--tracking { left: -0.15%; top: 0.12%; height: 122.83%; }
+.phone__img--payment  { left: -0.27%; top: 0.39%; height: 114.19%; }
+
+/* ---- How to ship ---- */
+.howto { background: var(--surface); }
+.howto__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.howto__title { text-align: center; }
+
+.howto__row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 72px;
+}
+.howto__figure {
+  position: relative;
+  flex: none;
+  width: 604px;
+  height: 516px;
+  border-radius: 6px;
+  background: var(--surface);
+  overflow: hidden;
+}
+.howto__figure img {
+  position: absolute;
+  left: calc(50% + 0.5px);
+  top: calc(50% - 0.27px);
+  transform: translate(-50%, -50%);
+  width: 883px;
+  height: 594px;
+  max-width: none;
+  object-fit: cover;
+}
+
+.howto__steps {
+  flex: none;
+  width: 532px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.step { display: flex; align-items: flex-start; gap: 8px; width: 100%; }
+.step__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  overflow: hidden;
+}
+.step__icon img { width: 22px; height: 22px; max-width: none; }
+.step__text {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-wrap: break-word;
+}
+.step__title { font-size: 20px; font-weight: 600; line-height: 32px; color: var(--on-surface); }
+.step__body  { width: 506px; max-width: none; font-size: 16px; line-height: 28px; color: var(--text-subdued); }
+
+/* ---- Shipping price calculator ---- */
+.calc { background: var(--highlight-subdued); margin-top: 160px; }
+.calc__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 64px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.calc__head .section-head__sub { width: 862px; font-size: 18px; }
+
+.calcbox {
+  width: 840px;
+  max-width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.calcbox__row { width: 100%; display: flex; align-items: flex-start; gap: 24px; }
+
+.field {
+  flex: 1 1 0;
+  min-width: 0;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+.field--tall { height: 72px; }
+.field__label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+.field__label--muted { color: var(--text-subdued); }
+
+.control {
+  width: 100%;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+}
+.control--select   { justify-content: space-between; }
+.control--readonly { border-color: transparent; background: var(--surface-subdued); }
+.control__value {
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--text-subdued);
+  white-space: nowrap;
+}
+.control__chev { flex: none; width: 16px; height: 16px; }
+
+.plan {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 10px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: var(--surface);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 24px;
+  color: var(--text-subdued);
+  white-space: nowrap;
+}
+.plan--active { border-color: var(--focus); color: var(--focus); font-weight: 600; }
+
+.calcbox__note { font-size: 12px; line-height: 16px; color: var(--text-subdued); }
+.calcbox__rule {
+  width: 100%;
+  height: 0;
+  margin: 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+
+.pricebox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  padding: 16px 10px;
+  border-radius: 4px;
+  background: var(--surface-subdued);
+  color: var(--on-surface);
+  white-space: nowrap;
+}
+.pricebox__label { font-size: 14px; font-weight: 500; line-height: 24px; }
+.pricebox__value { font-size: 40px; font-weight: 700; line-height: 56px; }
+
+.calcbox__link {
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--highlight);
+  text-decoration: underline;
+  text-underline-position: from-font;
+}
+
+/* ---- FAQ ---- */
+.faq { background: var(--surface); }
+.faq__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 24px;
+}
+.faq__intro {
+  width: 537px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+  overflow-wrap: break-word;
+}
+.faq__title { font-size: 48px; font-weight: 700; line-height: 64px; color: var(--on-surface); }
+.faq__sub {
+  width: 544px;
+  max-width: none;
+  font-size: 18px;
+  line-height: 32px;
+  color: var(--text-subdued);
+}
+
+.faq__list {
+  width: 620px;
+  flex: none;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 40px;
+}
+.qa {
+  width: 100%;
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+}
+.qa[open] { background: rgba(235, 235, 235, .5); }
+.qa__q {
+  display: flex;
+  align-items: center;
+  gap: 72px;
+  list-style: none;
+  cursor: pointer;
+}
+.qa__q::-webkit-details-marker { display: none; }
+.qa__q > span {
+  flex: 1 1 0;
+  min-width: 0;
+  font-size: 20px;
+  font-weight: 600;
+  line-height: 32px;
+  color: var(--on-surface);
+  overflow-wrap: break-word;
+}
+.qa__chev { flex: none; width: 20px; height: 20px; transition: transform .2s ease; }
+.qa[open] .qa__chev { transform: rotate(180deg); }
+.qa__a {
+  margin-top: 8px;
+  font-size: 16px;
+  line-height: 28px;
+  color: var(--text-subdued);
+  overflow-wrap: break-word;
+}
+
+/* ============================================================
+   Buy for Me page — Figma "Buy for Me" frame (1440px, node 2686:2670)
+   ============================================================ */
+
+.bhero__photo { left: -166px; top: -15px; width: 789px; height: 526px; }
+
+/* ---- Sourcing made simple ---- */
+.sourcing { background: var(--surface); }
+.sourcing__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.sourcing__head .section-head__sub { width: 684px; font-size: 18px; }
+
+.sourcing__grid {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+.scard {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 24px;
+  padding: 40px;
+  border-radius: 12px;
+  background: var(--highlight-subdued);
+}
+.scard__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: #cce4f5;
+}
+.scard__glyph { max-width: none; }
+.scard__glyph--store { width: 20px; height: 20px; }
+.scard__glyph--card  { width: 20px; height: 20px; }
+.scard__glyph--truck { width: 24px; height: 24px; }
+
+.scard__text {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  overflow-wrap: break-word;
+}
+.scard__title { font-size: 24px; font-weight: 600; line-height: 32px; color: var(--on-surface); }
+.scard__body  { font-size: 16px; line-height: 28px; color: var(--text-subdued); }
+
+/* ---- How to use Buy for Me (taller figure, full-width step copy) ---- */
+.howto__accent { color: var(--focus); }
+.howto--buy .howto__figure { height: 704px; }
+.howto--buy .howto__figure img {
+  left: -339px;
+  top: 4.23px;
+  transform: none;
+  width: 1124px;
+  height: 748.6px;
+}
+.howto--buy .step__body { width: 100%; }
+
+/* ============================================================
+   Buy for Others page — Figma "Buy for Others" frame (1440px, node 2686:2881)
+   ============================================================ */
+
+.ohero__left { width: 680px; }
+
+/* ---- Customers to Serve ---- */
+/* overflow:hidden matches Figma's own frame clip — without it the rings'
+   extra height (they're taller than the stage) paints over the section
+   that follows, since absolutely-positioned content paints above a later
+   sibling's background regardless of DOM order. */
+/* The section's own tinted background carries the standard 160px section
+   gap (as padding, not margin) so it butts straight against the hero with
+   no page-background sliver between two colored blocks — the same total
+   spacing as every other section transition, just recoloured to flow. */
+.customers { background: var(--highlight-subdued); overflow: hidden; }
+.customers__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 88px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.customers__head { width: 508px; max-width: 100%; }
+.customers__head .section-head__sub { width: 508px; font-size: 18px; }
+
+/* The photo, its floating request cards, and the decorative rings behind it
+   are one fixed-size composition (688x480, matching Figma). Below 688px
+   the whole thing scales down together via container-query units instead
+   of reflowing — same picture, smaller, exactly like the desktop version. */
+.customers__viewport {
+  container-type: inline-size;
+  position: relative;
+  width: 100%;
+  max-width: 688px;
+  aspect-ratio: 688 / 480;
+}
+.customers__stage {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 688px;
+  height: 480px;
+  transform-origin: top left;
+  transform: scale(calc(100cqi / 688px));
+}
+.customers__rings {
+  position: absolute;
+  left: -273px;
+  top: 0;
+  width: 1232px;
+  height: 568px;
+  pointer-events: none;
+}
+.customers__ring { position: absolute; max-width: none; }
+.customers__ring--outer { left: 0;     top: 55px;  width: 1232px; height: 1232px; opacity: .25; }
+.customers__ring--inner { left: 116px; top: 251px; width: 1000px; height: 1000px; opacity: .2; }
+
+.customers__frame {
+  position: absolute;
+  left: 116px;
+  top: 0;
+  width: 456px;
+  height: 480px;
+  border: 8px solid rgba(0, 122, 206, .2);
+  border-radius: 12px;
+  background: #f5f3ee;
+  overflow: hidden;
+}
+.customers__photo {
+  position: absolute;
+  left: -78px;
+  top: 0;
+  width: 900px;
+  height: 601px;
+  max-width: none;
+  object-fit: cover;
+}
+.customers__scrim {
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background: #000d10;
+  opacity: .12;
+}
+
+/* Floating request cards — same visual language as the home hero's chip-card,
+   but with a plain label/message/qty stack instead of a status pill.
+   display:contents keeps the wrapper out of the box tree so each card
+   still positions directly against .customers__stage. */
+.customers__cards { display: contents; }
+.reqcard {
+  position: absolute;
+  width: 232px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--surface);
+  border-radius: 8px;
+  box-shadow: 0 2px 7px 0 rgba(0, 13, 16, .05);
+}
+.reqcard--tl { left: 0;     top: 88px; }
+.reqcard--tr { left: 456px; top: 88px; }
+.reqcard--bl { left: 0;     top: 306px; }
+.reqcard--br { left: 456px; top: 306px; }
+
+.reqcard__icon {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: var(--highlight-subdued);
+}
+.reqcard__icon img { width: 20px; height: 20px; }
+
+.reqcard__body { display: flex; flex-direction: column; align-items: flex-start; gap: 4px; width: 156px; }
+.reqcard__from { font-size: 10px; font-weight: 500; line-height: 12px; color: var(--text-subdued); }
+.reqcard__msg  { width: 146px; font-size: 12px; font-weight: 500; line-height: 16px; color: var(--on-surface); }
+.reqcard__qty {
+  font-size: 8px;
+  line-height: 10px;
+  color: #484451;
+  white-space: nowrap;
+  font-feature-settings: "dlig" 1, "lnum" 1, "pnum" 1;
+}
+
+/* ---- Become the Ultimate Plug (reuses .features / .fcard / .phone) ---- */
+.features--plug .fcard__text { gap: 16px; }
+.features--plug .phone { height: 353px; }
+.phone__img--dashboard   { left:  0.15%; top: 0.03%; height: 156.6%;  }
+.phone__img--commissions { left:  0.15%; top: 0.2%;  height: 103.02%; }
+.phone__img--requests    { left: -0.1%;  top: 0.21%; height: 110.35%; }
+
+/* ---- How to process orders (reuses .howto / .step) ---- */
+.howto--others .step__body { width: 100%; }
+.howto--others .howto__figure { height: 704px; }
+.howto--others .howto__figure img {
+  left: calc(50% + 9.5px);
+  top: calc(50% + 104px);
+  transform: translate(-50%, -50%);
+  width: 623px;
+  height: 934px;
+}
+
+/* ============================================================
+   Fulfil for Me page — Figma "Fulfil for Me" frame (1440px, node 2686:3134)
+   ============================================================ */
+
+.fhero__photo { left: -108px; top: 8px; width: 839.897px; height: 560px; }
+
+/* ---- We Make Expansion Easy For Your Business (reuses .sourcing/.scard) ---- */
+.expand__grid {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.expand__row {
+  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+.scard__icon--alt { background: #d4e8f7; }
+
+/* ---- Grow Your Business Beyond Borders (reuses .customers/.reqcard/.chip) ---- */
+/* Unlike Buy for Others, this tinted section follows a WHITE section, so a
+   margin-based gap (page background either side) is invisible and fine —
+   the seamless-flow fix on .customers only mattered when a dark hero led
+   straight into a tinted section. */
+.grow { background: #f7f3e6; margin-top: 160px; }
+.grow__head { width: 982px; max-width: 100%; }
+
+.grow__ring--outer { left: 1px;   top: 44px;  width: 1232px; height: 1232px; opacity: .3; }
+.grow__ring--inner { left: 142px; top: 268px; width: 950px;  height: 901px;  opacity: .3; }
+
+.grow__frame  { border-color: rgba(228, 145, 58, .25); }
+.grow__photo  { left: -62px; top: -13px; width: 970px; height: 646px; }
+
+.grow__card--amazon     { left: 0;     top: 80px; }
+.grow__card--ebay       { left: 456px; top: 80px; }
+.grow__card--etsy       { left: 0;     top: 326px; }
+.grow__card--storefront { left: 456px; top: 326px; }
+
+.grow__logo {
+  background: #f3f3f3;
+  padding: 12px 8px;
+}
+.grow__logo img { width: 40px; height: 20px; max-width: none; object-fit: contain; }
+.grow__logo--icon { padding: 7px; }
+.grow__logo--icon img { width: 20px; height: 20px; }
+
+/* ---- How It Works (reuses .howto / .step, steps on the left like Buy for Others) ---- */
+.howto--fulfil .howto__figure { height: 840px; }
+.howto--fulfil .howto__figure img {
+  left: calc(50% - 0.5px);
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 1143px;
+  height: 862px;
+}
+
+/* ---- Integrate with ---- */
+/* .faq__inner already carries a 160px bottom pad (it's a shared shorthand,
+   top+bottom together) so this section only needs its own bottom gap
+   before the footer — adding another top pad here would double it. */
+.integrate { background: var(--surface); }
+.integrate__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 0 var(--gutter) 160px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.integrate__title { text-align: center; }
+.integrate__row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.integrate__logo { height: 48px; width: auto; max-width: none; object-fit: contain; }
+.integrate__logo--shopify { height: 44px; }
+.integrate__logo--etsy    { height: 40px; }
+
+/* ============================================================
+   Contact Us page — Figma "Contact Us" frame (1440px, node 2686:3571)
+   ============================================================ */
+
+/* ---- Page intro: no Figma hero for this simplified page — the teal ahero shell
+   was cut deliberately (see handoff.md) — so this is just the shared .section-head,
+   reused as the page's H1, sitting directly in the (white) offices section. ---- */
+.section-head__sub a { color: var(--highlight); text-decoration: underline; text-underline-position: from-font; }
+
+/* ---- Our Offices Around The World ---- */
+.offices__heading { font-size: 28px; font-weight: 700; line-height: 38px; color: var(--on-surface); text-align: center; }
+.offices { background: var(--surface); }
+.offices__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+.offices__grid {
+  width: 100%;
+  max-width: 1264px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.office {
+  flex: 1 1 460px;
+  min-width: 0;
+  background: #f7f3e6;
+  border-radius: 12px;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 16px;
+}
+.office__title { font-weight: 600; line-height: 24px; color: var(--on-surface); }
+.office__rows { display: flex; flex-direction: column; gap: 8px; }
+.office__row  { color: var(--text-subdued); }
+.office__row p { margin: 0; line-height: 28px; }
+.office__row strong { font-weight: 600; color: var(--text-subdued); }
+.office__row a { color: inherit; text-decoration: none; }
+.office__row a:hover { text-decoration: underline; }
+
+/* ============================================================
+   Pricing page — Figma "Pricing" frame (1440px, node 2686:4078)
+   ============================================================ */
+
+/* ---- Hero: light bg + decorative dotted-map watermark ----
+   The map is a Figma composition of thousands of individually-placed
+   1-2px dot vectors (a hand-authored world map illustration) — reproducing
+   that as markup isn't practical, so it's exported once as a flattened
+   transparent PNG and used as an ordinary background image. */
+.phero { background: var(--surface); position: relative; overflow: hidden; }
+.phero__map {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 1168px;
+  max-width: none;
+  pointer-events: none;
+}
+.phero__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 96px var(--gutter) 64px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  text-align: center;
+}
+.phero__eyebrow { font-size: 24px; font-weight: 600; line-height: 24px; color: var(--text-subdued); }
+/* width:100% is load-bearing: without it this flex item sizes to fit-content of
+   its widest child (.phero__sub's explicit 738px), ignoring the actual viewport
+   and overflowing at narrow widths instead of shrinking. */
+.phero__text { width: 100%; display: flex; flex-direction: column; gap: 8px; align-items: center; }
+.phero__title { font-size: 64px; font-weight: 700; line-height: 80px; letter-spacing: -0.64px; color: var(--on-surface); }
+.phero__sub { width: 738px; max-width: 100%; font-size: 20px; line-height: 36px; color: var(--text-subdued); }
+
+.phero__toggle { display: inline-flex; align-items: center; background: rgba(18, 18, 18, .1); border-radius: 4px; }
+.phero__toggle-btn {
+  width: 152px;
+  padding: 8px;
+  border-radius: 4px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  color: var(--on-surface);
+}
+.phero__toggle-btn.is-active { background: var(--on-surface); color: var(--surface); }
+
+/* ---- Pricing cards ---- */
+.pcards { background: var(--surface); }
+.pcards__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 0 var(--gutter) 160px;
+  display: flex;
+  align-items: stretch;
+  gap: 24px;
+}
+.pcard {
+  flex: 1 1 0;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.pcard__top, .pcard__bottom { display: flex; flex-direction: column; gap: 20px; }
+.pcard__head { display: flex; align-items: center; justify-content: space-between; }
+.pcard__name-row { display: flex; align-items: center; gap: 16px; }
+.pcard__name { font-size: 24px; font-weight: 600; line-height: 24px; color: var(--on-surface); }
+.pcard__badge {
+  padding: 8px;
+  height: 25px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+  background: rgba(42, 157, 143, .1);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.pcard__cube { width: 24px; height: 24px; flex: none; }
+.pcard__desc { font-size: 18px; font-weight: 500; line-height: 38px; color: var(--on-surface); }
+.pcard__price { display: flex; align-items: baseline; gap: 10px; }
+.pcard__amount { font-size: 48px; font-weight: 700; color: var(--on-surface); }
+.pcard__cadence { font-size: 18px; font-weight: 500; color: var(--text-subdued); }
+.pcard__cta { width: 100%; padding: 12px 10px; font-size: 16px; }
+
+/* ---- Compare all features ---- */
+.pfeat { background: var(--surface); }
+.pfeat__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 0 var(--gutter) 160px;
+  display: flex;
+  flex-direction: column;
+  gap: 48px;
+}
+.pfeat__head { display: flex; flex-direction: column; gap: 8px; }
+.pfeat__title { font-size: 48px; font-weight: 700; line-height: 64px; color: var(--on-surface); }
+.pfeat__sub { width: 544px; max-width: 100%; font-size: 18px; line-height: 32px; color: var(--text-subdued); }
+
+/* ---- Mobile plan tabs: hidden above the mobile breakpoint, where the table
+   already shows all three plans side by side. Reuses the .phero__toggle pill
+   language. See the ≤767px block for the column-hiding logic it drives. ---- */
+.ptabs { display: none; }
+.ptabs__btn {
+  flex: 1 1 0;
+  padding: 8px;
+  border: 0;
+  background: none;
+  border-radius: 4px;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
+  text-align: center;
+  color: var(--on-surface);
+  cursor: pointer;
+}
+.ptabs__btn.is-active { background: var(--on-surface); color: var(--surface); }
+
+.pfeat__table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--border); border-radius: 4px; }
+.ptable { width: 100%; min-width: 780px; border-collapse: collapse; }
+.ptable__col--feature { width: 34%; }
+.ptable__col--basic, .ptable__col--pro, .ptable__col--premium { width: 22%; }
+.ptable th, .ptable td { padding: 8px 16px; text-align: left; }
+.ptable thead th {
+  height: 64px;
+  background: var(--surface-subdued);
+  border-bottom: 1px solid var(--border);
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.ptable tbody td {
+  height: 64px;
+  border-bottom: 1px solid var(--border);
+  font-size: 16px;
+  color: var(--on-surface);
+}
+.ptable tbody tr:last-child td { border-bottom: 0; }
+.ptable td.ptable__value, .ptable th.ptable__value { text-align: center; }
+/* The site-wide `img { display: block; }` reset means .ptable__value's
+   text-align: center never centers these — margin-inline: auto does the
+   actual centering for a block-level element with a fixed width. */
+.ptable__icon { width: 24px; height: 24px; margin-inline: auto; }
+.ptable__dash { height: auto; }  /* the dash SVG is a 24×1.7 line, not a 24×24 glyph — let it keep its own thin aspect ratio */
+
+/* ============================================================
+   Tablet / intermediate widths
+   (the Figma file specifies 1440px and 393px only — these fill the gap)
+   ============================================================ */
+@media (max-width: 1439px) {
+  .hero__inner  { justify-content: space-between; }
+  .hero__right  { left: auto; right: -32px; }
+}
+
+@media (max-width: 1300px) {
+  :root { --gutter: 48px; }
+
+  .arow__label { width: 42%; }
+  .ahero__title { width: 100%; }
+  .ahero__left  { width: 46%; }
+
+  .shero__left      { width: 46%; }
+  .howto__figure    { width: 46%; }
+  .howto__row       { gap: 48px; }
+  .howto__steps     { flex: 1 1 0; min-width: 0; width: auto; }
+  .step__body       { width: 100%; }
+  .serve__head      { width: 100%; }
+  .serve__head .section-head__sub,
+  .features__head .section-head__sub,
+  .calc__head .section-head__sub,
+  .sourcing__head .section-head__sub,
+  .customers__head .section-head__sub { width: 100%; max-width: 862px; }
+  .offerings__list   { width: auto; flex: 1 1 0; min-width: 0; }
+  .offerings__figure { width: 46%; height: 760px; }
+  .offerings__figure img { left: 50%; transform: translate(-50%, -50%); width: auto; height: 100%; min-width: 100%; }
+}
+
+@media (max-width: 1120px) {
+  .hero__inner  { height: auto; padding-block: 64px 0; flex-direction: column; align-items: center; }
+  .hero__left   { margin-top: 0; align-items: center; text-align: center; width: 100%; max-width: 560px; }
+  .hero__sub    { width: 100%; }
+  .hero__right  { position: relative; left: auto; right: auto; top: auto; margin: 56px auto 64px; }
+  .offerings__inner { padding-block: 96px; }
+  .stories { margin-bottom: 96px; }
+  .footer__inner { flex-wrap: wrap; gap: 48px 64px; }
+  .footer__brand { width: 100%; max-width: 359px; }
+
+  /* About: the two-column rows stack */
+  .about__inner { padding-block: 96px 0; gap: 80px; }
+  .arow         { flex-direction: column; gap: 24px; }
+  .arow__label  { width: 100%; padding-right: 0; }
+  .arow__body   { width: 100%; }
+  .leaders      { max-width: none; }
+  .gallery__inner { padding-block: 96px; }
+
+  .ahero__inner {
+    height: auto;
+    flex-direction: column;
+    align-items: flex-start;
+    padding-block: 88px;
+    gap: 56px;
+  }
+  .ahero__left, .ahero__right { margin-bottom: 0; }
+  .ahero__left  { width: 100%; max-width: 616px; }
+  .ahero__right { width: 456px; max-width: 100%; }
+
+  .shero__left { width: 100%; max-width: 616px; }
+
+  .offices__inner { padding-block: 96px; }
+
+  .serve__inner, .features__inner, .howto__inner, .customers__inner { padding-top: 96px; }
+  .calc  { margin-top: 96px; }
+  .grow  { margin-top: 96px; }
+  .faq__inner { padding-block: 96px; flex-direction: column; gap: 48px; }
+  .faq__intro, .faq__list { width: 100%; }
+  .faq__sub { width: 100%; }
+
+  .serve__grid { flex-wrap: wrap; }
+  .serve__item { flex: 0 0 calc((100% - 32px) / 3); }
+
+  .howto__row { flex-direction: column; align-items: stretch; gap: 48px; }
+  .howto__figure,
+  .howto--buy    .howto__figure,
+  .howto--others .howto__figure,
+  .howto--fulfil .howto__figure { width: 100%; height: 460px; }
+  .howto__figure img,
+  .howto--buy    .howto__figure img,
+  .howto--others .howto__figure img,
+  .howto--fulfil .howto__figure img {
+    left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%; height: 100%;
+    min-width: 100%; min-height: 100%;
+  }
+
+  .sourcing__inner { padding-top: 96px; }
+  .sourcing__head .section-head__sub { width: 100%; max-width: 684px; }
+  .integrate__row { flex-wrap: wrap; justify-content: center; row-gap: 24px; }
+
+  /* Buy for Others: the floating request cards already dropped into a
+     static grid at 900px; keep the hero copy column full-width too. */
+  .ohero__left { width: 100%; max-width: 616px; }
+
+  .phero__inner  { padding-block: 64px 48px; }
+  .pcards__inner { padding-bottom: 96px; flex-wrap: wrap; }
+  .pcard         { flex: 1 1 320px; }
+  .pfeat__inner  { padding-bottom: 96px; }
+}
+
+/* ---- Hamburger takes over from the inline nav ---- */
+@media (max-width: 900px) {
+  .header { position: relative; z-index: 20; }
+  .nav-toggle { display: flex; }
+
+  .nav {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: 8px var(--gutter) 24px;
+    background: var(--secondary);
+    border-top: 1px solid rgba(250, 250, 250, .12);
+    box-shadow: 0 12px 24px rgba(0, 13, 16, .18);
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity .18s ease, transform .18s ease, visibility .18s;
+  }
+  .nav-open .nav { visibility: visible; opacity: 1; transform: none; }
+
+  .nav__list { display: flex; flex-direction: column; align-items: stretch; gap: 0; }
+  .nav__item { flex-direction: column; align-items: stretch; gap: 0; padding: 12px 0; }
+  .nav__item > a { padding: 0; }
+  .nav__item a, .nav__login, .nav__trigger { font-size: 16px; }
+  .nav__trigger,
+  .nav__link { width: 100%; justify-content: space-between; }
+
+  .navmenu {
+    position: static;
+    display: none;
+    min-width: 0;
+    margin-top: 4px;
+    padding: 0;
+    border-radius: 0;
+    background: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .has-menu.is-open > .navmenu { display: flex; }
+  .navmenu .navmenu__link {
+    padding: 10px 0 10px 12px;
+    border-radius: 0;
+    font-weight: 400;
+    color: var(--surface-subdued);
+  }
+  .navmenu .navmenu__link:hover { background: none; color: var(--primary); }
+  .navmenu .navmenu__link[aria-current="page"] { color: var(--primary); }
+  .nav__actions {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 20px;
+    border-top: 1px solid rgba(250, 250, 250, .12);
+  }
+  .nav__login { padding: 4px 0; }
+  .nav__actions .btn { width: 100%; }
+
+  .offerings__row { flex-direction: column; align-items: stretch; gap: 48px; }
+  .offerings__figure { width: 100%; height: 520px; }
+  .stories__grid { flex-direction: column; }
+  .stories__col  { width: 100%; }
+
+  .nav__item--w108 { width: auto; }
+
+  .features__grid { flex-direction: column; align-items: stretch; }
+  /* flex:1 1 0 sized the cards along the row's width; once the grid stacks
+     into a column, that same flex-basis:0 collapses each card's height. */
+  .fcard { flex: none; }
+  .sourcing__grid { flex-wrap: wrap; }
+  .scard { flex: 0 0 calc((100% - 24px) / 2); }
+  /* Fulfil for Me's 6 cards are authored as two rows of three; dissolve that
+     grouping so all six wrap together as one even 2-up grid. */
+  .expand__grid { flex-direction: row; flex-wrap: wrap; }
+  .expand__row  { display: contents; }
+  .fcard { padding-inline: 32px; }
+  .fcard__text { height: auto; }
+  /* let the phone shrink with the card instead of setting its min width */
+  .phone { width: 100%; max-width: 325px; height: auto; aspect-ratio: 325 / 381; }
+  .features--plug .phone { aspect-ratio: 325 / 353; }
+
+  .gallery__row { flex-direction: column; align-items: stretch; }
+  .shot--left   { width: 100%; }
+  .shot--right  { flex: none; width: 100%; }
+  /* Once the tiles are fluid, centre-crop the photos instead of pinning them */
+  .shot__img { inset: 0; width: 100%; height: 100%; transform: none; }
+
+}
+
+/* ============================================================
+   Mobile — Figma "Home page" mobile frame (393px, node 2686:1885)
+   ============================================================ */
+@media (max-width: 767px) {
+  :root { --gutter: 24px; }
+
+  .d-only { display: none; }
+  .m-only { display: inline; }
+
+  /* ---- Header: logo + hamburger, 12px block padding ---- */
+  .header__inner { padding-block: 12px; }
+  .logo--header  { width: 84.667px; height: 16px; }
+
+  /* ---- Hero: image above the copy ---- */
+  .hero__inner {
+    position: static;
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    gap: 38px;
+    padding-block: 42px 64px;
+  }
+  .hero__right {
+    order: 1;
+    position: relative;
+    left: auto; right: auto; top: auto;
+    margin: 0;
+    width: 100%;
+    max-width: 345px;
+    height: 320px;
+    overflow: hidden;
+  }
+  .hero__left {
+    order: 2;
+    margin-top: 0;
+    width: 100%;
+    max-width: 345px;
+    align-items: flex-start;
+    text-align: left;
+    gap: 16px;
+  }
+  .hero__text  { gap: 8px; width: 100%; }
+  .hero__title { font-size: 48px; line-height: 64px; letter-spacing: -0.48px; width: 295px; max-width: 100%; }
+  .hero__sub   { width: 100%; font-size: 16px; line-height: 28px; letter-spacing: 0.16px; }
+  .hero .btn--lg { font-size: 14px; }
+
+  .hero__imagegroup {
+    left: calc(50% + 0.5px);
+    top: 10px;
+    width: 240px;
+    height: 300px;
+    border-radius: 8px;
+  }
+  .hero__imageframe { border-radius: 8px; }
+  .hero__photo { width: 455px; height: 327px; left: -176px; top: 7px; }
+  .hero__scrim { width: 240px; height: 300px; border-radius: 8px; }
+
+  /* ---- Hero status cards, scaled-down variant ---- */
+  .chip-card { padding: 8px; gap: 6px; border-radius: 4px; }
+  .chip-card--ship      { left: 8px;   top: 51px;  width: auto; }
+  .chip-card--buyme     { left: 213px; top: 50px; }
+  .chip-card--buyothers { left: 0;     top: 200px; gap: 8px; }
+  .chip-card--fulfil    { left: 199px; top: 198px; gap: 8px; }
+
+  .chip-card__icon { width: 28px; height: 28px; border-radius: 2px; }
+  .ic--full     { width: 14px;      height: 14px; }
+  .ic--delivery { width: 12.874px;  height: 12.874px; }
+  .ic--layers   { width: 11.643px;  height: 11.641px; }
+
+  .chip-card__body  { gap: 2px; }
+  .chip-card__label { font-size: 6px; line-height: 8px; }
+  .chip-card__title { font-size: 8px; line-height: 10px; }
+  .chip-card--ship      .chip-card__body { width: 68px; }
+  .chip-card--buyme     .chip-card__body { width: 80px; }
+  .chip-card--buyothers .chip-card__body { width: 74px; }
+  .chip-card--fulfil    .chip-card__body { width: 84px; }
+  .chip-card--buyothers .chip-card__title { white-space: normal; }
+  .chip-card--fulfil    .chip-card__title { width: 88px; line-height: 12px; }
+
+  .chip   { gap: 2px; padding: 2px 4px; border-radius: 2px; font-size: 6px; line-height: 8px; }
+  .chip i { width: 2px; height: 2px; }
+  .chip-card--buyothers .chip { gap: 4px; }
+  .chip-card--ship      .chip { padding-block: 1px; }
+
+  /* ---- Section headings: left-aligned on mobile ---- */
+  .section-head { align-items: flex-start; text-align: left; width: 100%; }
+  .section-head__title { font-size: 32px; line-height: 40px; }
+  .section-head__sub,
+  .section-head--offerings .section-head__sub,
+  .section-head--stories   .section-head__sub { width: 100%; font-size: 16px; line-height: 28px; }
+
+  /* ---- Our Offerings: photo first, then the list ---- */
+  .offerings__inner { padding-block: 96px 160px; gap: 24px; }
+  .offerings__row   { flex-direction: column; align-items: stretch; gap: 24px; }
+  .offerings__figure {
+    order: 1;
+    width: 100%;
+    height: 480px;
+    border-radius: 6px;
+  }
+  .offerings__figure img {
+    left: -55px;
+    top: calc(50% + 12px);
+    transform: translateY(-50%);
+    width: 648px;
+    height: 512px;
+    min-width: 0;
+  }
+  .offerings__list { order: 2; width: 100%; gap: 32px; }
+  .offering        { gap: 4px; }
+  .offering__title { font-size: 20px; line-height: 32px; }
+  .offering__body  { font-size: 14px; line-height: 28px; }
+  .offering .btn--md { margin-top: 8px; font-size: 14px; }
+
+  /* ---- Testimonials: one column, no tinted background ---- */
+  .stories        { background: var(--surface); margin-bottom: 96px; }
+  .stories__inner { padding-block: 0; gap: 24px; }
+  .stories__grid  { flex-direction: column; gap: 24px; }
+  .stories__col   { width: 100%; gap: 24px; }
+
+  /* ---- Footer: stacked, collapsible link groups ---- */
+  .footer__inner {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 24px;               /* between the link groups */
+    padding-block: 48px;
+  }
+  .footer__brand    { width: 100%; max-width: none; gap: 16px; }
+  .footer__brandtop { gap: 12px; }
+
+  .footer__col       { width: 100% !important; gap: 16px; }
+  .footer__col:first-of-type { gap: 12px; margin-top: 16px; }  /* 24 + 16 = 40 below the brand block */
+  .footer__heading   { cursor: pointer; }
+  .footer__chev      { display: block; transform: rotate(180deg); }   /* points up while expanded */
+  .footer__col:not([open]) .footer__chev { transform: rotate(0deg); }
+  .footer__links     { gap: 12px; }
+
+  /* ---- About page at phone widths ---- */
+  .ahero__inner  { padding-block: 48px 56px; gap: 40px; }
+  .ahero__eyebrow { font-size: 14px; line-height: 24px; }
+  .ahero__title  { font-size: 40px; line-height: 52px; letter-spacing: -0.4px; }
+  .ahero__right  { width: 100%; height: auto; aspect-ratio: 456 / 480; }
+  .ahero__frame  {
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+  .ahero__photo  { inset: 0; width: 100%; height: 100%; transform: none; }
+
+  .about__inner  { padding-block: 64px 0; gap: 56px; }
+  .arow          { gap: 16px; }
+  .arow__label   { font-size: 32px; line-height: 40px; }
+  .prose         { font-size: 16px; line-height: 28px; }
+  .value__text   { font-size: 16px; line-height: 28px; white-space: normal; }
+  .value         { align-items: flex-start; }
+  .value__icon   { margin-top: 2px; }
+
+  .stats         { row-gap: 32px; }
+  .stat, .stat--fixed { width: 100%; flex: none; white-space: normal; }
+  .stat__value   { font-size: 64px; line-height: 72px; }
+  .stat__label   { font-size: 16px; }
+
+  .leaders       { gap: 32px; }
+  .leader__meta  { width: auto !important; }
+  .leader__name  { font-size: 20px; line-height: 28px; }
+  .leader__role  { font-size: 14px; }
+
+  .gallery__inner { padding-block: 64px; gap: 32px; }
+  .gallery__title { font-size: 32px; line-height: 40px; }
+  .shot           { height: 240px; }
+
+  /* ---- Ship for Me at phone widths ---- */
+  .shero__title { font-size: 40px; line-height: 52px; letter-spacing: -0.4px; }
+  .shero__sub   { font-size: 16px; line-height: 28px; }
+
+  /* ---- Contact Us at phone widths ---- */
+  .offices__inner { padding-block: 64px; gap: 32px; }
+  .office__title  { font-size: 16px; }
+  .offices__heading { font-size: 24px; line-height: 32px; }
+
+  .serve__inner, .features__inner, .howto__inner, .customers__inner { padding-top: 64px; gap: 32px; }
+  /* Vertical rhythm once the row wraps: 8px from a photo to its own label, 24px
+     from that label down to the next row's photo — the tighter inner gap keeps a
+     label grouped with its own image instead of floating between rows. Only
+     `row-gap` is touched, not the `gap` shorthand — the column gap has to stay
+     16px or the `calc((100% - 16px) / 2)` basis below overflows the row. */
+  .serve__grid  { row-gap: 24px; }
+  .serve__item  { flex: 0 0 calc((100% - 16px) / 2); gap: 8px; }
+
+  .fcard        { padding: 32px 24px 0; gap: 32px; }
+  .fcard__title { font-size: 20px; line-height: 28px; }
+  .features--plug .features__grid { gap: 40px; }
+
+  .howto__title { font-size: 32px; line-height: 40px; }
+  .howto__figure,
+  .howto--buy    .howto__figure,
+  .howto--others .howto__figure,
+  .howto--fulfil .howto__figure { height: 300px; }
+
+  .sourcing__inner { padding-top: 64px; gap: 32px; }
+  .sourcing__grid  { flex-direction: column; }
+  .expand__grid    { gap: 16px; }
+  .scard        { flex: none; width: 100%; padding: 24px; gap: 20px; }
+  .scard__title { font-size: 20px; line-height: 28px; }
+  .step__title  { font-size: 18px; line-height: 28px; }
+  .step__body   { font-size: 14px; line-height: 24px; }
+
+  .calc { margin-top: 64px; }
+  .grow { margin-top: 64px; }
+  .integrate__inner { padding-bottom: 64px; }
+  .calc__inner { padding-block: 48px; gap: 32px; }
+  .calcbox     { padding: 20px; gap: 20px; }
+  .calcbox__row { flex-direction: column; gap: 20px; }
+  .field--tall  { height: auto; }
+  .field__label { white-space: normal; }
+  .control__value { white-space: normal; }
+  .plan { height: auto; min-height: 40px; padding: 8px 10px; white-space: normal; text-align: center; }
+  .pricebox__value { font-size: 32px; line-height: 44px; }
+
+  .faq__inner { padding-block: 64px; gap: 32px; }
+  .faq__title { font-size: 32px; line-height: 40px; }
+  .faq__sub   { font-size: 16px; line-height: 28px; }
+  .faq__list  { gap: 24px; }
+  .qa__q      { gap: 24px; }
+  .qa__q > span { font-size: 16px; line-height: 28px; }
+  .qa__a      { font-size: 14px; line-height: 24px; }
+
+  /* ---- Pricing at phone widths ---- */
+  .phero__inner  { padding-block: 64px 32px; gap: 20px; }
+  .phero__eyebrow { font-size: 18px; }
+  .phero__title  { font-size: 40px; line-height: 52px; letter-spacing: -0.4px; }
+  .phero__sub    { font-size: 16px; line-height: 28px; }
+  .phero__toggle { width: 100%; }
+  .phero__toggle-btn { flex: 1 1 0; width: auto; }
+  .pcards__inner { padding-bottom: 64px; flex-direction: column; }
+  .pcard         { flex: none; width: 100%; }
+  .pfeat__inner  { padding-bottom: 64px; gap: 32px; }
+  .pfeat__title  { font-size: 32px; line-height: 40px; }
+  .pfeat__sub    { font-size: 16px; line-height: 28px; }
+
+  /* Comparing 3 plans side-by-side needs a horizontal scroll to be legible at
+     phone widths — not a great experience for a table people actually want to
+     compare. Below 767px the table drops to 2 columns (Features + whichever
+     plan is selected) via .ptabs instead, so it needs no scrolling at all. */
+  .ptabs { display: flex; align-items: center; background: rgba(18, 18, 18, .1); border-radius: 4px; margin-bottom: 16px; }
+  .ptable { min-width: 0; }
+  .ptable__col--feature { width: 60%; }
+  /* The <col> itself has to be hidden too, not just the <td>s — a hidden cell
+     doesn't stop its <colgroup> column from still reserving width, which was
+     leaving a blank gap on the right equal to the two hidden plan columns. */
+  .ptable__col--basic, .ptable__col--pro, .ptable__col--premium { width: 40%; display: none; }
+  .ptable__value--basic, .ptable__value--pro, .ptable__value--premium { display: none; }
+  .ptable[data-active-plan="basic"]   .ptable__col--basic,
+  .ptable[data-active-plan="pro"]     .ptable__col--pro,
+  .ptable[data-active-plan="premium"] .ptable__col--premium { display: table-column; }
+  .ptable[data-active-plan="basic"]   .ptable__value--basic,
+  .ptable[data-active-plan="pro"]     .ptable__value--pro,
+  .ptable[data-active-plan="premium"] .ptable__value--premium { display: table-cell; }
+}
+
+/* The footer groups only collapse at mobile widths */
+@media (min-width: 768px) {
+  .footer__heading { pointer-events: none; }
+}
+
+/* Below the 393px design frame, ease the display sizes down */
+@media (max-width: 359px) {
+  .hero__title { font-size: 40px; line-height: 54px; width: 100%; }
+  .section-head__title { font-size: 28px; line-height: 38px; }
+}

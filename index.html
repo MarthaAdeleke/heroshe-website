@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Heroshe — Buy and Sell Everywhere</title>
+<meta name="description" content="Heroshe makes it easy for businesses to source, buy, sell, and ship products anywhere." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<!-- ───────────────────────── Header ───────────────────────── -->
+<header class="header">
+  <div class="header__inner">
+    <a class="logo logo--header" href="index.html" aria-label="Heroshe home">
+      <img src="assets/icons/logo-header.svg" alt="Heroshe" />
+    </a>
+
+    <button class="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="site-nav">
+      <img src="assets/icons/hamburger.svg" alt="" aria-hidden="true" />
+    </button>
+
+    <nav class="nav" id="site-nav" aria-label="Main">
+      <ul class="nav__list">
+        <li class="nav__item nav__item--w108 has-menu">
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-products">
+            Products
+            <img class="nav__chevron" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+          </button>
+          <div class="navmenu" id="menu-products">
+            <a class="navmenu__link" href="ship-for-me.html">Ship for Me</a>
+            <a class="navmenu__link" href="buy-for-me.html">Buy for Me</a>
+            <a class="navmenu__link" href="buy-for-others.html">Buy for Others</a>
+            <a class="navmenu__link" href="fulfil-for-me.html">Fulfil for Me</a>
+          </div>
+        </li>
+        <li class="nav__item has-menu">
+          <button class="nav__trigger" type="button" aria-expanded="false" aria-controls="menu-company">
+            Company
+            <img class="nav__chevron" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+          </button>
+          <div class="navmenu" id="menu-company">
+            <a class="navmenu__link" href="about.html">About</a>
+            <a class="navmenu__link" href="contact-us.html">Contact Us</a>
+          </div>
+        </li>
+      </ul>
+      <div class="nav__actions">
+        <a class="btn btn--sm" href="#">Get started</a>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<!-- ───────────────────────── Hero ───────────────────────── -->
+<section class="hero">
+  <div class="hero__inner">
+
+    <div class="hero__left">
+      <div class="hero__text">
+        <h1 class="hero__title">Buy and Sell Everywhere</h1>
+        <p class="hero__sub"><span class="d-only">We make it easy for businesses to source, buy, sell, and ship products anywhere.</span><span class="m-only">We make it easier for businesses to source, buy, ship, and fulfill products worldwide.</span></p>
+      </div>
+      <a class="btn btn--lg" href="#">Get started today</a>
+    </div>
+
+    <div class="hero__right">
+      <div class="hero__imagegroup">
+        <div class="hero__imageframe">
+          <img class="hero__photo" src="assets/img/hero.jpg" alt="A Heroshe customer holding a parcel" />
+          <span class="hero__scrim" aria-hidden="true"></span>
+        </div>
+      </div>
+
+      <!-- Floating status cards -->
+      <div class="chip-card chip-card--ship">
+        <span class="chip-card__icon chip-card__icon--highlight">
+          <img class="ic ic--full" src="assets/icons/receipt.svg" alt="" />
+        </span>
+        <div class="chip-card__body">
+          <p class="chip-card__label" style="color:var(--highlight)">Ship for Me</p>
+          <p class="chip-card__title">5 items ready for pickup</p>
+          <span class="chip chip--highlight"><i></i>Shipment arrived</span>
+        </div>
+      </div>
+
+      <div class="chip-card chip-card--buyme">
+        <span class="chip-card__icon chip-card__icon--critical">
+          <img class="ic ic--layers" src="assets/icons/layers.svg" alt="" />
+        </span>
+        <div class="chip-card__body">
+          <p class="chip-card__label" style="color:var(--critical)">Buy for me</p>
+          <p class="chip-card__title">2 pending BuyForMe requests</p>
+          <span class="chip chip--critical"><i></i>Awaiting action</span>
+        </div>
+      </div>
+
+      <div class="chip-card chip-card--buyothers">
+        <span class="chip-card__icon chip-card__icon--success">
+          <img class="ic ic--delivery" src="assets/icons/delivery-shipping.svg" alt="" />
+        </span>
+        <div class="chip-card__body">
+          <p class="chip-card__label" style="color:var(--success)">Buy for others</p>
+          <p class="chip-card__title">1 deal successfully closed</p>
+          <span class="chip chip--success"><i></i>Commission received</span>
+        </div>
+      </div>
+
+      <div class="chip-card chip-card--fulfil">
+        <span class="chip-card__icon chip-card__icon--warning">
+          <img class="ic ic--full" src="assets/icons/bell.svg" alt="" />
+        </span>
+        <div class="chip-card__body">
+          <p class="chip-card__label" style="color:var(--warning)"><span class="d-only">Fulfil for me</span><span class="m-only">Sell for me</span></p>
+          <p class="chip-card__title">Your customer&rsquo;s delivery is on it's way.</p>
+          <span class="chip chip--warning"><i></i>Etsy delivery request</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ───────────────────────── Our Offerings ───────────────────────── -->
+<section class="offerings">
+  <div class="offerings__inner">
+
+    <div class="section-head section-head--offerings">
+      <h2 class="section-head__title">Our Offerings</h2>
+      <p class="section-head__sub"><span class="d-only">We make buying and selling internationally a breeze. Choose your preferred service below.</span><span class="m-only">We make trading locally and internationally a walk in the park. Choose your preferred services below.</span></p>
+    </div>
+
+    <div class="offerings__row">
+      <div class="offerings__list">
+
+        <article class="offering">
+          <h3 class="offering__title">Ship for Me</h3>
+          <p class="offering__body">Expand your business with premium products you shop from the USA, UK, or China and have them seamlessly shipped to your location with Heroshe.</p>
+          <a class="btn btn--md" href="ship-for-me.html">Read more</a>
+        </article>
+
+        <article class="offering">
+          <h3 class="offering__title">Buy for Me</h3>
+          <p class="offering__body">We help you source the right suppliers and products, handle purchases and payments on your behalf.</p>
+          <a class="btn btn--md" href="buy-for-me.html">Read more</a>
+        </article>
+
+        <article class="offering">
+          <h3 class="offering__title">Buy for Others</h3>
+          <p class="offering__body">Heroshe connects you with customers looking to source specific products. As a plug, you can fulfil their requests and earn commissions on successful orders.</p>
+          <a class="btn btn--md" href="buy-for-others.html">Read more</a>
+        </article>
+
+        <article class="offering">
+          <h3 class="offering__title"><span class="d-only">Fulfil for Me</span><span class="m-only">Sell for Me</span></h3>
+          <p class="offering__body">Your products deserve a global audience. We help you sell your locally made goods on international platforms like Etsy, Amazon, and eBay, handling the entire process for you.</p>
+          <a class="btn btn--md" href="fulfil-for-me.html">Read more</a>
+        </article>
+
+      </div>
+
+      <div class="offerings__figure">
+        <img src="assets/img/offerings.jpg" alt="A Heroshe seller on the phone beside stacked shipping boxes" />
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ───────────────────────── Testimonials ───────────────────────── -->
+<section class="stories">
+  <div class="stories__inner">
+
+    <div class="section-head section-head--stories">
+      <h2 class="section-head__title">Real Stories, Real Success 💛</h2>
+      <p class="section-head__sub">See how Heroshe has grown and transformed their businesses.</p>
+    </div>
+
+    <div class="stories__grid">
+
+      <div class="stories__col">
+        <figure class="tcard">
+          <blockquote class="tcard__quote">From the moment the package arrived in their US warehouse to my pickup literally today, Heroshe has been professional and efficient with their updates that I was honestly stunned!<br />I don't think I've ever received such efficient service with a Nigerian company but I'm glad! Solid staff who always respond with courtesy and enthusiasm and you can tell there's a good vibrant and youthful atmosphere among the company as well.<br />Thank you for your stellar service!</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar avatar--sq4" style="background:var(--yellow);color:var(--on-surface);font-size:20px">C</span>
+            <span class="tcard__name">Chinwe Okoli</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">Very professional service at all times. Highly recommended for quick and efficient service.</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:#121212;color:var(--surface)">O</span>
+            <span class="tcard__name">Olufemi Bello</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">To say it's the best is an understatement. Heroshe totally made my experience shipping from US great and seamless. Make una carry dey go!</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--critical);color:var(--surface)">U</span>
+            <span class="tcard__name">Uchechukwu Ajuzieogu</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="stories__col">
+        <figure class="tcard">
+          <blockquote class="tcard__quote">First time experience and they delivered💯. Purchased a MacBook from eBay and I followed their guide on how to process shipping to their Houston warehouse. They received my package within 2days and shipped to their manifest the next Thursday. My laptop arrived Nigeria within 2weeks, UNSCATHED &amp; WELL PACKAGED.</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--highlight);color:var(--surface)">J</span>
+            <span class="tcard__name">Just Fumz</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">SHIPPING EXPERIENCE WAS GREAT AND AT A VERY AFFORDABLE RATE, FASTEST SHIPPING I GOT. THANK YOU HEROSHE.<br />GREAT SERVICES 10/10</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--success);color:var(--surface)">A</span>
+            <span class="tcard__name">Abubakar Shinaka</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">I have been very pleased with Heroshe's top notch service and cost effective shipping to 9ja! I used to use other carriers and there were always issues or problems with the shipments clearing customs. Heroshe takes care of all of that for you at a fraction of the cost. I am so happy I found them (I came across a youtube video that recommended them, and for that I am grateful!)</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--yellow);color:var(--on-surface)">L</span>
+            <span class="tcard__name">Loreta L</span>
+          </figcaption>
+        </figure>
+      </div>
+
+      <div class="stories__col">
+        <figure class="tcard">
+          <blockquote class="tcard__quote">Great and wonderful company on international logistics and delivery. This company is a tear wiper; for anything you need to buy from abroad, use Heroshe for the shipment and be rest assured, no extra payment or unnecessary unforeseen charges.</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--critical);color:var(--surface)">O</span>
+            <span class="tcard__name">Obalux Paint Chemical</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">I extend my sincere appreciation to Heroshe Shipping Company for their impeccable service in facilitating the secure and timely delivery of my laptop. The efficiency displayed by Heroshe throughout the shipping process is truly commendable. I am impressed with the seamless coordination and attention to detail that ensured the safe arrival of my valuable possession.</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:var(--yellow);color:var(--on-surface)">S</span>
+            <span class="tcard__name">Somtoo Mekowulu</span>
+          </figcaption>
+        </figure>
+
+        <figure class="tcard">
+          <blockquote class="tcard__quote">So far, my experiences with heroshe has been awesome, with timely and quality service delivery.</blockquote>
+          <figcaption class="tcard__author">
+            <span class="avatar" style="background:#2a9d8f;color:var(--surface)">A</span>
+            <span class="tcard__name">Aroyewun Kingsley</span>
+          </figcaption>
+        </figure>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ───────────────────────── Footer ───────────────────────── -->
+<footer class="footer">
+  <div class="footer__inner">
+
+    <div class="footer__brand">
+      <div class="footer__brandtop">
+        <span class="logo logo--footer"><img src="assets/icons/logo-footer.svg" alt="Heroshe" /></span>
+        <p class="footer__blurb">We empower businesses to connect across borders, enabling you to source, sell, and export globally. With Heroshe, global commerce is at your fingertips.</p>
+      </div>
+      <a class="btn btn--xs" href="#">Get started today</a>
+    </div>
+
+    <details class="footer__col" style="width:153px" open>
+      <summary class="footer__heading">
+        <span>Services</span>
+        <img class="footer__chev" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+      </summary>
+      <div class="footer__links">
+        <a href="#">Shipping</a>
+        <a href="#">Sourcing</a>
+        <a href="#">Inventory Management</a>
+        <a href="#">Stores discovery</a>
+      </div>
+    </details>
+
+    <details class="footer__col" style="width:73px" open>
+      <summary class="footer__heading">
+        <span>Support</span>
+        <img class="footer__chev" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+      </summary>
+      <div class="footer__links">
+        <a href="#">Blog</a>
+        <a href="contact-us.html">Contact us</a>
+      </div>
+    </details>
+
+    <details class="footer__col" style="width:64px" open>
+      <summary class="footer__heading">
+        <span>Company</span>
+        <img class="footer__chev" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+      </summary>
+      <div class="footer__links">
+        <a href="about.html">About</a>
+        <a href="#">Careers</a>
+      </div>
+    </details>
+
+    <details class="footer__col" style="width:66px" open>
+      <summary class="footer__heading">
+        <span>Follow</span>
+        <img class="footer__chev" src="assets/icons/chevron-down.svg" alt="" aria-hidden="true" />
+      </summary>
+      <div class="footer__links">
+        <a href="#">X</a>
+        <a href="#">LinkedIn</a>
+        <a href="#">Facebook</a>
+        <a href="#">Instagram</a>
+        <a href="#">YouTube</a>
+      </div>
+    </details>
+
+  </div>
+</footer>
+
+<script src="site.js"></script>
+
+</body>
+</html>
