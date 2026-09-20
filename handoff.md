@@ -4,14 +4,22 @@ Static HTML/CSS build of the Heroshe marketing site, implemented from the Figma 
 [`Portfolio` (jF30lHhApwjMbD2oV2DTCO)](https://www.figma.com/design/jF30lHhApwjMbD2oV2DTCO/Portfolio).
 No build step, no framework, no dependencies — plain HTML files sharing one stylesheet and one script.
 
-**⚠️ There is a second Figma file.** [`Heroshe Website Redesign`
-(BqQ7ISVe69j1EM52X5A4dN)](https://www.figma.com/design/BqQ7ISVe69j1EM52X5A4dN/Heroshe-Website-Redesign)
-contains at least some of the same screens as `Portfolio`, and where they overlap the
-redesign file is the more current/correct one — the "Who We Serve" row there ships the
-"You!" wordmark as a proper exported graphic where `Portfolio` had it as a text layer
-(see §3). **Everything in this build so far was implemented from `Portfolio`.** Nobody has
-audited the two files against each other, so assume other screens may have drifted too —
-check the redesign file first before treating `Portfolio` as authoritative on any detail.
+**⚠️ The current design source is a third Figma file.** [`Design Collection`
+(vSKBvQ1uwJyhGN4KHfzEDn), node `32:766`](https://www.figma.com/design/vSKBvQ1uwJyhGN4KHfzEDn/Design-Collection?node-id=32-766)
+holds every screen on one canvas — the owner's Figma account was locked and the designs
+were moved there. Everything in this build was originally implemented from `Portfolio`
+(`jF30…`); `Heroshe Website Redesign` (`BqQ7…`) is a moodboard plus a few frames and
+nothing more. **Audited against `Design Collection` on 2026-09-20 — results in §6.**
+Desktop pages match the build closely; the divergences are the mobile Ship for Me frame,
+a second Contact Us variant, an Annual pricing state, and a "Get started" flow that has
+no page yet.
+
+**Figma tooling limits (learned the hard way):** `get_metadata` responses over ~24k
+characters now fail outright instead of saving to a file, and `get_design_context` on a
+full page can exceed 1M characters. For an audit, pull `get_screenshot` of a whole
+section at high `maxDimension` (16000 worked on a 22835px canvas), download it, and crop
+each screen locally with `sips -c H W --cropOffset Y X` (an offset of 0,0 is treated as
+"centred" — use 1). Reserve `get_design_context` for one small node at a time.
 
 **Under version control as of the initial commit** (`9ca13cf`). Note that everything
 predating that commit has no history — the whole build landed as one import, so `git log`
@@ -321,11 +329,11 @@ second layer underneath.
   in places, almost certainly from Figma's `calc(50% ± N)` auto-layout math rather than
   intentional design variance. Normalizing keeps the site's rhythm consistent instead of
   reproducing what look like rounding artifacts.
-- **No mobile Figma frame exists** for About, Ship for Me, Buy for Me, Buy for Others,
-  Fulfil for Me, Contact Us, or Pricing. Their mobile layouts (breakpoints, stacking
-  order, the container-query scaling trick in §3) are my own responsive design, built to
-  match the site's established visual language — not verified against a design file
-  because none exists yet.
+- **Mobile Figma frames exist only for Home and Ship for Me** (`Design Collection`).
+  Home's is already built. **Ship for Me's is not, and it is a genuinely different design,
+  not the desktop reflowed** — see §6 item 2. Every other page (About, Buy for Me, Buy for
+  Others, Fulfil for Me, Contact Us, Pricing) still has no mobile frame; those mobile
+  layouts are my own responsive design, unverified against any design file.
 - **Pricing's header doesn't match its own Figma frame.** That frame specifies "Products
   / Company / Blog / Login / Get started" — a wider nav than any other page in the file.
   Per explicit instruction, it uses the same header every other page uses (Products /
@@ -347,14 +355,14 @@ second layer underneath.
   branching the markup for one page. The email/phone this would have surfaced are now
   shown in the page's own intro line instead (see §1), so the information isn't
   actually missing — it just lives at the top of the page rather than in the footer.
-- **FAQ answer copy is placeholder on all four service pages — every question on a page
-  shows the same answer.** Figma only supplies real answer text for the one expanded FAQ
-  item per page, so that single answer got repeated under every question on that page:
-  Ship for Me repeats its pricing answer ×6, Buy for Others its "add customers" answer ×5,
-  Fulfil for Me a fulfilment answer ×5. **Buy for Me is the worst case — it repeats Ship
-  for Me's US-to-Nigeria *pricing* answer ×6, which is the wrong page's content**, not
-  just thin content. 22 answers across the four pages need real copy; this is a content
-  gap, not a rendering bug.
+- **FAQ copy is placeholder on all four service pages, and the placeholder is in Figma
+  itself.** Each page's design has one expanded answer; the build repeats it under every
+  question. **Ship for Me's design has the same question six times** ("How much does it
+  cost to ship from USA to Nigeria?") — the questions need authoring, not just answers.
+  **Buy for Me's one expanded answer is Ship for Me's pricing text** (in Figma too), so it
+  is wrong-page content; Buy for Others' and Fulfil for Me's are on-topic. Fulfil for Me's
+  design also lists its first question twice (six rows); the build deduped to five. 22
+  answers need real copy. This is a content gap owned by whoever writes the copy.
 - **The header's "Company" dropdown now links to About and Contact Us** (same
   `.has-menu`/`.navmenu` pattern as "Products" — no open-state exists for it in Figma
   either, so it follows the site's own surface/shadow language, same as Products always
@@ -387,22 +395,47 @@ starting a second one on the same port).
 
 Roughly in priority order:
 
-1. **Audit `Portfolio` against `Heroshe Website Redesign`** (see the note at the top).
-   Every page here was built from `Portfolio`; the redesign file is newer where they
-   overlap. Until someone diffs them, any page could be carrying the same class of
-   mismatch the "You!" wordmark did.
-2. **Real FAQ copy — 22 answers across all four service pages** (see §4). Every question
+1. **Build the "Get started" / Login flow** — this is the destination for the ~17 dead
+   "Get started" buttons and it is designed (3 frames in `Design Collection`): "Which of
+   our services are you **signing up** for?" with Ship for Me / Buy for Me / Buy for
+   Others / Fulfil for Me, in two variants (radio list + Continue, or per-service
+   buttons), plus a "logging in to" variant. Product logic visible in the design: only
+   **Ship for Me** has a self-serve action ("Start Shipping" / "Continue"); the other
+   three are **"Book A Call"**. Needs a decision on which sign-up variant, and whether
+   Login exists at all (the nav we use has no Login link). Design bug to flag: the Fulfil
+   for Me description ends in a stray comma and is set in a different font.
+2. **Rebuild Ship for Me's mobile layout from its Figma frame** (`Design Collection`,
+   1440-wide desktop sits beside a 390px mobile). The mobile design differs from desktop:
+   hero button pair "Get started today" + "View Pricing" (desktop: "Book A Call");
+   headline "From US, UK…" (desktop: "From **The** US, UK…"); Who We Serve relabels MSME →
+   "Small & large scale businesses" and shuffles which photo sits under which label; the
+   features section is **Split Pay / Free Pickup at Lagos Warehouse / Shipping Calculator**
+   (desktop: Doorstep Delivery / Real-time Tracking / Flexible Payment Options) under a
+   different intro line; and a **"Find Shipping Tips for Your Business?" blog teaser with
+   3 cards replaces the FAQ**. Desktop and mobile can't both be current — **ask the owner
+   which is authoritative before building.**
+3. **Contact Us has a second, newer variant** — a full-bleed photo hero (man in red, arms
+   outstretched) with centred "Contact Us" title, replacing the teal hero with the
+   woman's portrait. The build cut the hero entirely (§1); decide whether the new one
+   brings it back. Copy change in the new variant: China office hours read "(GMT)"
+   where every other variant says "(GMT+1)" — confirm it isn't a typo.
+4. **Build the real Quarterly/Annual toggle on Pricing.** The Annual state is now
+   designed: $0 / **$130** / **$220** "per year" (Quarterly: $0 / $35 / $60 "every 3
+   months"), and the first table row changes — US air shipping Basic/PRO/PREMIUM becomes
+   **$15 / $13 / $11** per kg (Quarterly: $20 / $14 / $12). Every other row is identical.
+   The toggle is currently a static mockup.
+5. **Real FAQ copy — 22 answers across all four service pages** (see §4). Every question
    on a page currently shows that page's single Figma-supplied answer. Buy for Me is the
    urgent one: it repeats Ship for Me's pricing answer, so it's showing factually wrong
    content, not just placeholder content.
-3. **Wire the remaining CTAs and footer/social links** to real destinations once they
+6. **Wire the remaining CTAs and footer/social links** to real destinations once they
    exist (signup flow, calendar booking, social profiles).
-4. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
+7. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
    currently only has About and Contact Us — see §4).
-5. **Get a mobile Figma frame for the four service pages, About, Contact Us, and
+8. **Get mobile Figma frames for the four service pages, About, Contact Us, and
    Pricing**, or explicit sign-off that the current responsive adaptations (§4) are good
    enough as-is.
-6. **Decide on a real backend/CMS story** if this moves past a static prototype —
+9. **Decide on a real backend/CMS story** if this moves past a static prototype —
    nothing here has any dynamic behavior; it's markup and CSS only. A Contact Us form
    was deliberately left out for exactly this reason (see §1) — revisit it once there's
    a backend able to receive submissions.
