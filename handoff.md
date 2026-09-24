@@ -439,8 +439,9 @@ second layer underneath.
   existing responsive build (features, Who We Serve, FAQ identical at every width) is
   correct and unchanged, and the blog teaser was explicitly rejected (no blog on this
   site). Every other page (About, Buy for Me, Buy for Others, Fulfil for Me, Contact Us,
-  Pricing, Get Started, Book A Call, Careers) still has no mobile frame; those mobile
-  layouts are my own responsive design, unverified against any design file.
+  Pricing, Get Started, Book A Call, Careers) still has no mobile frame — **the owner has
+  explicitly signed off on my own responsive design for all of these rather than
+  commissioning real frames**, so this is settled, not a gap (see §6).
 - **Pricing's header doesn't match its own Figma frame.** That frame specifies "Products
   / Company / Blog / Login / Get started" — a wider nav than any other page in the file.
   Per explicit instruction, it uses the same header every other page uses (Products /
@@ -477,11 +478,10 @@ second layer underneath.
   `.has-menu`/`.navmenu` pattern as "Products" — no open-state exists for it in Figma
   either, so it follows the site's own surface/shadow language, same as Products always
   did). No Blog — deliberately out of scope, see §1.
-- **Remaining CTAs still pointing at `href="#"`**: the footer's Services column
-  (Shipping, Sourcing, Inventory Management, Stores discovery — no dedicated pages
-  exist for these), the FAQ chevrons' target action, and every social icon in the
-  footer (X, LinkedIn, Facebook, Instagram, YouTube). "Get started" / "Get started
-  today" and "Book A Call" are now wired everywhere (see §1).
+- **Remaining links still pointing at `href="#"`**: only the five social icons in the
+  footer (X, LinkedIn, Facebook, Instagram, YouTube) — no real profiles to link to yet.
+  Everything else (footer Services column, "Get started", "Book A Call") is wired
+  (see §1/§6).
 
 ---
 
@@ -506,23 +506,31 @@ starting a second one on the same port).
 
 Roughly in priority order:
 
-1. **Wire the remaining CTAs and footer/social links** to real destinations once they
-   exist: the footer's Services column (Shipping, Sourcing, Inventory Management,
-   Stores discovery — no dedicated pages exist yet), the FAQ chevrons' target action,
-   and the five social icons (X, LinkedIn, Facebook, Instagram, YouTube). "Get
-   started"/"Book A Call" are done (see §1) — this is everything else still on `#`.
-2. **Get mobile Figma frames for About, Buy for Me, Buy for Others, Fulfil for Me,
-   Contact Us, Pricing, Get Started, Book A Call, and Careers**, or explicit sign-off
-   that the current responsive adaptations (§4) are good enough as-is. (Home and Ship
-   for Me already have real frames — see §1/§4 for how Ship for Me's was resolved.)
-3. **Decide on a real backend/CMS story** if this moves past a static prototype —
+1. **Decide on a real backend/CMS story** if this moves past a static prototype —
    nothing here has any dynamic behavior; it's markup and CSS only. Four things are
    waiting on this specifically, all deliberately left client-side-only for now: the
    Contact Us form (never built, see §1), Get Started's "Continue" (routes to a page,
    doesn't submit anything), Book A Call's confirmation (a static message, no booking
    is actually made), and Careers' "Email Us Your CV" (a `mailto:` link, not a real
-   application flow).
-4. **Confirm Contact Us's China-office "(GMT)" vs. every other office's "(GMT+1)"**
-   isn't a typo — a `Design Collection` variant of that page has the "(GMT)" version;
-   the live build already uses "(GMT+1)" everywhere, so no code change is pending, just
-   a fact-check with the owner.
+   application flow). This is the only item left on this list.
+
+**Everything else that was open is now resolved:**
+- **Footer's Services column** (Shipping / Sourcing / Inventory Management / Stores
+  discovery) now links to Ship for Me / Buy for Me / Fulfil for Me / Buy for Others
+  respectively, on all 11 pages — Ship for Me and Buy for Me's own footers already had
+  Shipping/Sourcing self-linked from the original build, which is what confirmed this
+  mapping rather than guessing it. The FAQ chevrons' action (opening the answer) was
+  never actually unwired — that's what `<details>`/`<summary>` already does natively.
+  The five social icons (X, LinkedIn, Facebook, Instagram, YouTube) are still `#` —
+  there's no real profile to link to yet.
+- **Mobile Figma frames — explicitly not needed.** The owner has signed off on the
+  current responsive adaptations across every page that never had a real mobile frame
+  (About, Buy for Me, Buy for Others, Fulfil for Me, Contact Us, Pricing, Get Started,
+  Book A Call, Careers) rather than commissioning one. Nothing to revisit here.
+- **Contact Us's GMT offsets are now geographically correct per office**, not copied
+  from either Figma variant (both had at least one office wrong): Delaware/US
+  (GMT-5, Eastern Time — previously showed no offset at all), Manchester/UK (GMT+0 —
+  also previously showed none), Ikeja/Nigeria (GMT+1, West Africa Time — already
+  correct, unchanged), Guangzhou/China (GMT+8, China Standard Time — was wrongly
+  GMT+1, which is what the audit had flagged as merely "worth confirming"; it turned
+  out to be a real bug, not a style inconsistency).
