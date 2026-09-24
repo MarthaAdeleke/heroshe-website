@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Get Started — Choose a Heroshe Service</title>
-<meta name="description" content="Tell us which Heroshe service you're signing up for and we'll take you there." />
+<title>Book A Call — Heroshe</title>
+<meta name="description" content="Pick a day and time and a member of the Heroshe team will call you." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -50,58 +50,72 @@
         </li>
       </ul>
       <div class="nav__actions">
-        <a class="btn btn--sm" href="#signup-form">Get started</a>
+        <a class="btn btn--sm" href="get-started.html">Get started</a>
       </div>
     </nav>
   </div>
 </header>
 
-<!-- ───────────────────────── Select a service ───────────────────────── -->
-<main class="signup">
-  <div class="signup__inner">
+<!-- ───────────────────────── Book a call ───────────────────────── -->
+<main class="book">
+  <div class="book__inner">
 
-    <div class="signup__head">
-      <p class="signup__eyebrow">SELECT A SERVICE</p>
-      <h1 class="signup__title">Which of our services are you signing up for?</h1>
+    <div class="section-head">
+      <h1 class="section-head__title">Book A Call With Our Team</h1>
+      <p class="section-head__sub">Pick a weekday that works for you and we&rsquo;ll call to talk through your shipping, sourcing, or fulfilment needs.</p>
     </div>
 
-    <form class="signup__form" id="signup-form">
-      <div class="signup__options">
-        <label class="soption">
-          <input type="radio" name="service" value="ship-for-me.html" checked />
-          <span class="soption__body">
-            <span class="soption__title">Ship for Me</span>
-            <span class="soption__desc">Have your purchased items seamlessly shipped to your location with Heroshe.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="buy-for-me.html" />
-          <span class="soption__body">
-            <span class="soption__title">Buy for Me</span>
-            <span class="soption__desc">We help you source the right suppliers and products on your behalf.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="buy-for-others.html" />
-          <span class="soption__body">
-            <span class="soption__title">Buy for Others</span>
-            <span class="soption__desc">Become a Heroshe plug and help customers fulfil their requests.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="fulfil-for-me.html" />
-          <span class="soption__body">
-            <span class="soption__title">Fulfil for Me</span>
-            <span class="soption__desc">Sell your locally made goods on platforms like Etsy, Amazon, and eBay.</span>
-          </span>
-        </label>
+    <div class="bookbox" id="book-picker">
+      <div class="bookbox__info">
+        <span class="bookbox__logo"><img src="assets/icons/logo-footer.svg" alt="Heroshe" /></span>
+        <h2 class="bookbox__title">30-Minute Call</h2>
+        <p class="bookbox__desc">A quick call with a member of the Heroshe team to answer your questions and get you started with the right service.</p>
+        <p class="bookbox__meta">30 minutes &middot; Phone call &middot; Mon&ndash;Fri, 9am&ndash;5pm (GMT+1)</p>
       </div>
 
-      <button class="btn signup__submit" type="submit">Continue</button>
+      <div class="bookbox__cal">
+        <div class="calendar">
+          <div class="calendar__head">
+            <button class="calendar__nav" type="button" id="cal-prev" aria-label="Previous month">&lsaquo;</button>
+            <p class="calendar__month" id="cal-month"></p>
+            <button class="calendar__nav" type="button" id="cal-next" aria-label="Next month">&rsaquo;</button>
+          </div>
+          <div class="calendar__weekdays">
+            <span>Su</span><span>Mo</span><span>Tu</span><span>We</span><span>Th</span><span>Fr</span><span>Sa</span>
+          </div>
+          <div class="calendar__grid" id="cal-grid"></div>
+        </div>
+
+        <div class="timeslots">
+          <p class="timeslots__label" id="slots-label">Available times</p>
+          <div class="timeslots__grid" id="slots-grid"></div>
+        </div>
+      </div>
+    </div>
+
+    <form class="bookform" id="book-form" hidden>
+      <div class="bookform__row">
+        <div class="field">
+          <label class="field__label" for="bk-name">Full name</label>
+          <input class="control control--field" id="bk-name" name="name" type="text" placeholder="Enter your full name" autocomplete="name" required />
+        </div>
+        <div class="field">
+          <label class="field__label" for="bk-email">Email address</label>
+          <input class="control control--field" id="bk-email" name="email" type="email" placeholder="you@email.com" autocomplete="email" required />
+        </div>
+      </div>
+      <div class="field">
+        <label class="field__label" for="bk-phone">Phone number</label>
+        <input class="control control--field" id="bk-phone" name="phone" type="tel" placeholder="Enter your phone number" autocomplete="tel" required />
+      </div>
+      <button class="btn bookform__submit" type="submit">Confirm Call &mdash; <span id="bk-summary"></span></button>
     </form>
+
+    <div class="bookconfirm" id="book-confirm" hidden>
+      <img class="bookconfirm__icon" src="assets/icons/check-circle.svg" alt="" aria-hidden="true" />
+      <p class="bookconfirm__title">Call requested!</p>
+      <p class="bookconfirm__sub" id="bk-confirm-sub"></p>
+    </div>
 
   </div>
 </main>
@@ -115,7 +129,7 @@
         <span class="logo logo--footer"><img src="assets/icons/logo-footer.svg" alt="Heroshe" /></span>
         <p class="footer__blurb">We empower businesses to connect across borders, enabling you to source, sell, and export globally. With Heroshe, global commerce is at your fingertips.</p>
       </div>
-      <a class="btn btn--xs" href="#signup-form">Get started today</a>
+      <a class="btn btn--xs" href="get-started.html">Get started today</a>
     </div>
 
     <details class="footer__col" style="width:153px" open>

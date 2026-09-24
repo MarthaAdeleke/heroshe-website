@@ -92,6 +92,155 @@
     });
   }
 
+  /* ---- Pricing: Quarterly / Annual toggle ----
+     Only present on pricing.html. Swaps every element carrying both
+     data-quarterly and data-annual (the three plan prices/cadences, and the
+     one comparison-table row that changes by billing period) to the
+     selected period's text. Everything else in the table is identical
+     between periods, so nothing else needs a data-annual value. */
+  var phero__toggle = document.querySelector('.phero__toggle');
+  if (phero__toggle) {
+    var billingButtons = [].slice.call(phero__toggle.querySelectorAll('.phero__toggle-btn'));
+    var swappable = [].slice.call(document.querySelectorAll('[data-quarterly][data-annual]'));
+    billingButtons.forEach(function (billingBtn) {
+      billingBtn.addEventListener('click', function () {
+        var period = billingBtn.dataset.billing;
+        billingButtons.forEach(function (b) {
+          var active = b === billingBtn;
+          b.classList.toggle('is-active', active);
+          b.setAttribute('aria-selected', String(active));
+        });
+        swappable.forEach(function (el) {
+          el.textContent = el.dataset[period];
+        });
+      });
+    });
+  }
+
+  /* ---- Book A Call: calendar mockup ----
+     Only present on book-a-call.html. Real current-month calendar (Date-
+     driven, not hardcoded), weekdays only — the site states Mon–Fri 9am–5pm
+     everywhere else (see Contact Us), so weekends are disabled here too, and
+     slots are generated hourly across those same hours. There's no backend
+     and no real availability data: picking a day/time/submitting the form
+     just walks the visitor through the motions and ends on a static
+     confirmation message. */
+  var calGrid = document.getElementById('cal-grid');
+  if (calGrid) {
+    var calMonthLabel = document.getElementById('cal-month');
+    var calPrev = document.getElementById('cal-prev');
+    var calNext = document.getElementById('cal-next');
+    var slotsLabel = document.getElementById('slots-label');
+    var slotsGrid = document.getElementById('slots-grid');
+    var bookForm = document.getElementById('book-form');
+    var bookConfirm = document.getElementById('book-confirm');
+    var bookPicker = document.getElementById('book-picker');
+    var bkSummary = document.getElementById('bk-summary');
+    var bkConfirmSub = document.getElementById('bk-confirm-sub');
+
+    var monthNames = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    var viewYear = today.getFullYear();
+    var viewMonth = today.getMonth();
+    var selectedDate = null;
+    var selectedTime = null;
+
+    function isPastOrWeekend(date) {
+      var day = date.getDay();
+      return date < today || day === 0 || day === 6;
+    }
+
+    function renderCalendar() {
+      calMonthLabel.textContent = monthNames[viewMonth] + ' ' + viewYear;
+      calGrid.innerHTML = '';
+
+      var firstDay = new Date(viewYear, viewMonth, 1).getDay();
+      var daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
+
+      for (var pad = 0; pad < firstDay; pad++) {
+        var padCell = document.createElement('span');
+        padCell.className = 'calendar__day calendar__day--pad';
+        calGrid.appendChild(padCell);
+      }
+
+      for (var d = 1; d <= daysInMonth; d++) {
+        var date = new Date(viewYear, viewMonth, d);
+        var dayBtn = document.createElement('button');
+        dayBtn.type = 'button';
+        dayBtn.className = 'calendar__day';
+        dayBtn.textContent = String(d);
+
+        if (date.getTime() === today.getTime()) dayBtn.classList.add('calendar__day--today');
+        if (selectedDate && date.getTime() === selectedDate.getTime()) dayBtn.classList.add('calendar__day--selected');
+
+        if (isPastOrWeekend(date)) {
+          dayBtn.disabled = true;
+        } else {
+          dayBtn.addEventListener('click', function () {
+            var y = viewYear, m = viewMonth;
+            selectedDate = new Date(y, m, Number(this.textContent));
+            selectedTime = null;
+            renderCalendar();
+            renderSlots();
+          });
+        }
+        calGrid.appendChild(dayBtn);
+      }
+    }
+
+    function renderSlots() {
+      if (!selectedDate) {
+        slotsLabel.textContent = 'Pick a weekday to see available times';
+        slotsGrid.innerHTML = '';
+        bookForm.hidden = true;
+        return;
+      }
+      slotsLabel.textContent = 'Available times — ' + selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' });
+      slotsGrid.innerHTML = '';
+      var hours = [9, 10, 11, 12, 13, 14, 15, 16];
+      hours.forEach(function (h) {
+        var label = (h > 12 ? h - 12 : h) + ':00 ' + (h >= 12 ? 'PM' : 'AM');
+        var slotBtn = document.createElement('button');
+        slotBtn.type = 'button';
+        slotBtn.className = 'timeslot';
+        slotBtn.textContent = label;
+        if (selectedTime === label) slotBtn.classList.add('is-selected');
+        slotBtn.addEventListener('click', function () {
+          selectedTime = label;
+          renderSlots();
+          bookForm.hidden = false;
+          bkSummary.textContent = selectedDate.toLocaleDateString(undefined, { weekday: 'long', month: 'long', day: 'numeric' }) + ' at ' + label;
+          bookForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        });
+        slotsGrid.appendChild(slotBtn);
+      });
+    }
+
+    calPrev.addEventListener('click', function () {
+      viewMonth -= 1;
+      if (viewMonth < 0) { viewMonth = 11; viewYear -= 1; }
+      renderCalendar();
+    });
+    calNext.addEventListener('click', function () {
+      viewMonth += 1;
+      if (viewMonth > 11) { viewMonth = 0; viewYear += 1; }
+      renderCalendar();
+    });
+
+    bookForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      bkConfirmSub.textContent = 'We’ll call you ' + bkSummary.textContent + '. A confirmation has been sent to your email.';
+      bookPicker.hidden = true;
+      bookForm.hidden = true;
+      bookConfirm.hidden = false;
+      bookConfirm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+
+    renderCalendar();
+    renderSlots();
+  }
+
   /* ---- Get Started: service picker ----
      Only present on get-started.html. Navigates to whichever service page's
      radio is selected — this page has no backend, so "Continue" is just a

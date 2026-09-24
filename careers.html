@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Get Started — Choose a Heroshe Service</title>
-<meta name="description" content="Tell us which Heroshe service you're signing up for and we'll take you there." />
+<title>Careers — Heroshe</title>
+<meta name="description" content="Help Heroshe open access to global commerce. See what we value and how to reach us about future roles." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Onest:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -44,66 +44,86 @@
           </button>
           <div class="navmenu" id="menu-company">
             <a class="navmenu__link" href="about.html">About</a>
-            <a class="navmenu__link" href="careers.html">Careers</a>
+            <a class="navmenu__link" href="careers.html" aria-current="page">Careers</a>
             <a class="navmenu__link" href="contact-us.html">Contact Us</a>
           </div>
         </li>
       </ul>
       <div class="nav__actions">
-        <a class="btn btn--sm" href="#signup-form">Get started</a>
+        <a class="btn btn--sm" href="get-started.html">Get started</a>
       </div>
     </nav>
   </div>
 </header>
 
-<!-- ───────────────────────── Select a service ───────────────────────── -->
-<main class="signup">
-  <div class="signup__inner">
+<main class="careers">
+  <div class="careers__inner">
 
-    <div class="signup__head">
-      <p class="signup__eyebrow">SELECT A SERVICE</p>
-      <h1 class="signup__title">Which of our services are you signing up for?</h1>
+    <!-- ───────────────────────── Intro ───────────────────────── -->
+    <div class="section-head">
+      <h1 class="section-head__title">Careers at Heroshe</h1>
+      <p class="section-head__sub">We're on a mission to improve lives by opening access to global commerce &mdash; and we're always glad to hear from people who want to help build that future.</p>
     </div>
 
-    <form class="signup__form" id="signup-form">
-      <div class="signup__options">
-        <label class="soption">
-          <input type="radio" name="service" value="ship-for-me.html" checked />
-          <span class="soption__body">
-            <span class="soption__title">Ship for Me</span>
-            <span class="soption__desc">Have your purchased items seamlessly shipped to your location with Heroshe.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="buy-for-me.html" />
-          <span class="soption__body">
-            <span class="soption__title">Buy for Me</span>
-            <span class="soption__desc">We help you source the right suppliers and products on your behalf.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="buy-for-others.html" />
-          <span class="soption__body">
-            <span class="soption__title">Buy for Others</span>
-            <span class="soption__desc">Become a Heroshe plug and help customers fulfil their requests.</span>
-          </span>
-        </label>
-
-        <label class="soption">
-          <input type="radio" name="service" value="fulfil-for-me.html" />
-          <span class="soption__body">
-            <span class="soption__title">Fulfil for Me</span>
-            <span class="soption__desc">Sell your locally made goods on platforms like Etsy, Amazon, and eBay.</span>
-          </span>
-        </label>
-      </div>
-
-      <button class="btn signup__submit" type="submit">Continue</button>
-    </form>
+    <!-- ───────────────────────── Values ───────────────────────── -->
+    <section class="arow">
+      <h2 class="arow__label">What We Value</h2>
+      <ul class="arow__body values">
+        <li class="value">
+          <span class="value__icon"><img src="assets/icons/star.svg" alt="" /></span>
+          <span class="value__text">Empathy: We treat others the way we want to be treated.</span>
+        </li>
+        <li class="value">
+          <span class="value__icon"><img src="assets/icons/star.svg" alt="" /></span>
+          <span class="value__text">Delight: We set out to make every experience a delightful one.</span>
+        </li>
+        <li class="value">
+          <span class="value__icon"><img src="assets/icons/star.svg" alt="" /></span>
+          <span class="value__text">Transparency: We strive to be honest, truthful and transparent.</span>
+        </li>
+        <li class="value">
+          <span class="value__icon"><img src="assets/icons/star.svg" alt="" /></span>
+          <span class="value__text">Accountability: We take ownership of the entire experience.</span>
+        </li>
+      </ul>
+    </section>
 
   </div>
+
+  <!-- ───────────────────────── Life at Heroshe ───────────────────────── -->
+  <section class="gallery">
+    <div class="gallery__inner">
+      <h2 class="gallery__title">Life At Heroshe</h2>
+
+      <div class="gallery__grid">
+        <figure class="shot shot--wide">
+          <img class="shot__img shot__img--wide" src="assets/img/about/team-wide.jpg" alt="The Heroshe team together" />
+          <span class="shot__scrim" aria-hidden="true"></span>
+        </figure>
+
+        <div class="gallery__row">
+          <figure class="shot shot--left">
+            <img class="shot__img shot__img--left" src="assets/img/about/team-left.jpg" alt="Heroshe team members at an event" />
+            <span class="shot__scrim" aria-hidden="true"></span>
+          </figure>
+          <figure class="shot shot--right">
+            <img class="shot__img shot__img--right" src="assets/img/about/team-right.jpg" alt="Heroshe team members together" />
+            <span class="shot__scrim" aria-hidden="true"></span>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="careers__inner careers__inner--foot">
+    <!-- ───────────────────────── Open roles (honest empty state) ───────────────────────── -->
+    <div class="careers__cta">
+      <p class="careers__cta-title">No open roles right now</p>
+      <p class="careers__cta-sub">We don&rsquo;t have any positions listed at the moment, but we&rsquo;re always glad to hear from great people. Send us your CV and a note about where you&rsquo;d like to help, and we&rsquo;ll reach out when something fits.</p>
+      <a class="btn" href="mailto:helpdesk@heroshe.com?subject=Careers%20at%20Heroshe">Email Us Your CV</a>
+    </div>
+  </div>
+
 </main>
 
 <!-- ───────────────────────── Footer ───────────────────────── -->
@@ -115,7 +135,7 @@
         <span class="logo logo--footer"><img src="assets/icons/logo-footer.svg" alt="Heroshe" /></span>
         <p class="footer__blurb">We empower businesses to connect across borders, enabling you to source, sell, and export globally. With Heroshe, global commerce is at your fingertips.</p>
       </div>
-      <a class="btn btn--xs" href="#signup-form">Get started today</a>
+      <a class="btn btn--xs" href="get-started.html">Get started today</a>
     </div>
 
     <details class="footer__col" style="width:153px" open>
@@ -149,7 +169,7 @@
       </summary>
       <div class="footer__links">
         <a href="about.html">About</a>
-        <a href="careers.html">Careers</a>
+        <a href="careers.html" aria-current="page">Careers</a>
       </div>
     </details>
 

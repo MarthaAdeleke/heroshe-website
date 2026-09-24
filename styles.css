@@ -50,6 +50,13 @@ strong { font-weight: 600; }
 img { display: block; max-width: 100%; }
 a { color: inherit; text-decoration: none; }
 ul { margin: 0; padding: 0; list-style: none; }
+/* Any component that sets its own `display` (flex layouts especially) beats
+   the browser's default `[hidden] { display: none }` UA rule, since author
+   styles always win over UA defaults regardless of selector specificity —
+   toggling the `hidden` attribute silently stops working the moment a class
+   like `.bookform { display: flex; }` also matches. Restore it globally
+   rather than re-discovering this per component. */
+[hidden] { display: none !important; }
 
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 3px; }
 
@@ -85,6 +92,18 @@ ul { margin: 0; padding: 0; list-style: none; }
 .btn--md { padding:  8px 24px; font-size: 16px; }  /* offerings "Read more" */
 .btn--sm { padding: 12px 32px; font-size: 14px; }  /* header */
 .btn--xs { padding:  8px 20px; font-size: 14px; }  /* footer */
+
+/* Secondary action next to a primary .btn on a dark (teal) hero — e.g. Ship
+   for Me's "View Pricing" beside "Get started today". Not in any Figma
+   frame pulled so far; styled to read clearly against .ahero's teal without
+   competing with the primary yellow fill. */
+.btn--outline {
+  background: transparent;
+  border: 1px solid var(--surface);
+  color: var(--surface);
+  padding-block: calc(12px - 1px);
+}
+.btn--outline:hover { background: rgba(250, 250, 250, .1); }
 
 /* ---------- Logo ---------- */
 .logo { display: block; position: relative; overflow: hidden; }
@@ -1141,6 +1160,16 @@ ul { margin: 0; padding: 0; list-style: none; }
   white-space: nowrap;
 }
 .control__chev { flex: none; width: 16px; height: 16px; }
+/* .control was built for the Ship for Me calculator's static <span> mockup,
+   so it never needed real input styling. --field adds the font/color/cursor
+   a genuine <input>/<textarea> needs, for pages with a real form control. */
+.control--field {
+  font-family: inherit;
+  font-size: 14px;
+  line-height: 24px;
+  color: var(--on-surface);
+}
+.control--field::placeholder { color: var(--text-subdued); }
 
 .plan {
   flex: 1 1 0;
@@ -1661,12 +1690,16 @@ ul { margin: 0; padding: 0; list-style: none; }
 .phero__toggle-btn {
   width: 152px;
   padding: 8px;
+  border: 0;
+  background: none;
   border-radius: 4px;
+  font-family: inherit;
   font-size: 16px;
   font-weight: 600;
   line-height: 24px;
   text-align: center;
   color: var(--on-surface);
+  cursor: pointer;
 }
 .phero__toggle-btn.is-active { background: var(--on-surface); color: var(--surface); }
 
@@ -1844,6 +1877,172 @@ ul { margin: 0; padding: 0; list-style: none; }
 .soption__desc { font-size: 14px; line-height: 24px; color: var(--text-subdued); }
 
 .signup__submit { width: 100%; padding: 16px 10px; font-size: 16px; }
+
+/* ============================================================
+   Book A Call page — not in any Figma file. A calendar-booking mockup for
+   "Book A Call" to link to (Buy for Me / Buy for Others / Fulfil for Me),
+   in the site's own visual language. No backend: picking a day/time and
+   "confirming" is all client-side (see site.js) — there's nothing to send
+   it to yet.
+   ============================================================ */
+.book { background: var(--surface); }
+.book__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 48px;
+}
+
+.bookbox {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  gap: 48px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+
+.bookbox__info {
+  flex: none;
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-right: 32px;
+  border-right: 1px solid var(--border);
+}
+.bookbox__logo img { height: 20px; width: auto; }
+.bookbox__title { font-size: 24px; font-weight: 700; line-height: 32px; color: var(--on-surface); }
+.bookbox__desc { font-size: 14px; line-height: 24px; color: var(--text-subdued); }
+.bookbox__meta { margin-top: auto; font-size: 14px; line-height: 24px; color: var(--text-subdued); }
+
+.bookbox__cal { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; gap: 24px; }
+
+.calendar__head { display: flex; align-items: center; justify-content: space-between; }
+.calendar__month { font-size: 16px; font-weight: 600; color: var(--on-surface); }
+.calendar__nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: none;
+  font-size: 16px;
+  color: var(--on-surface);
+  cursor: pointer;
+}
+.calendar__nav:hover { background: var(--surface-subdued); }
+
+.calendar__weekdays, .calendar__grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; }
+.calendar__weekdays { font-size: 12px; color: var(--text-subdued); text-align: center; }
+
+.calendar__day {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--on-surface);
+  cursor: pointer;
+}
+.calendar__day:hover:not(:disabled) { background: var(--surface-subdued); }
+.calendar__day:disabled { color: var(--border); cursor: not-allowed; }
+.calendar__day--today:not(.calendar__day--selected) { border-color: var(--on-surface); }
+.calendar__day--selected { background: var(--on-surface); color: var(--surface); }
+.calendar__day--pad { visibility: hidden; cursor: default; }
+
+.timeslots__label { font-size: 14px; font-weight: 600; color: var(--on-surface); }
+.timeslots__grid { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.timeslot {
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: none;
+  font-family: inherit;
+  font-size: 14px;
+  color: var(--on-surface);
+  cursor: pointer;
+}
+.timeslot:hover { background: var(--surface-subdued); }
+.timeslot.is-selected { background: var(--on-surface); border-color: var(--on-surface); color: var(--surface); }
+
+.bookform {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  padding: 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+}
+.bookform__row { display: flex; gap: 24px; }
+.bookform__submit { align-self: flex-start; }
+
+.bookconfirm {
+  width: 100%;
+  max-width: 900px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 48px 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+.bookconfirm__icon { width: 40px; height: 40px; }
+.bookconfirm__title { font-size: 20px; font-weight: 700; color: var(--on-surface); }
+.bookconfirm__sub { font-size: 14px; color: var(--text-subdued); }
+
+/* ============================================================
+   Careers page — not in any Figma file, and deliberately not fabricating
+   job listings: an empty "no open roles" state is an honest claim about
+   hiring status, invented listings wouldn't be. Reuses established
+   components rather than new ones — .section-head for the intro, the About
+   page's .arow/.values for culture, and .gallery/.shot for the team photos
+   (same images About already uses).
+   ============================================================ */
+.careers { background: var(--surface); }
+.careers__inner {
+  max-width: var(--frame);
+  margin-inline: auto;
+  padding: 160px var(--gutter) 0;
+  display: flex;
+  flex-direction: column;
+  gap: 128px;
+}
+/* The CTA sits in a second .careers__inner, after the .gallery section
+   (which supplies its own 160px top+bottom padding) — this one needs the
+   closing 160px before the footer without repeating the opening one. */
+.careers__inner--foot { padding: 0 var(--gutter) 160px; }
+
+.careers__cta {
+  width: 100%;
+  max-width: 620px;
+  margin-inline: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 24px;
+  padding: 48px 32px;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-align: center;
+}
+.careers__cta-title { font-size: 20px; font-weight: 700; color: var(--on-surface); }
+.careers__cta-sub { font-size: 16px; line-height: 28px; color: var(--text-subdued); }
 
 /* ============================================================
    Tablet / intermediate widths
@@ -2219,6 +2418,11 @@ ul { margin: 0; padding: 0; list-style: none; }
   /* ---- Ship for Me at phone widths ---- */
   .shero__title { font-size: 40px; line-height: 52px; letter-spacing: -0.4px; }
   .shero__sub   { font-size: 16px; line-height: 28px; }
+  /* Two hero buttons ("Get started today" + "View Pricing") no longer fit
+     side by side once the column narrows below ~420px — wrap instead of
+     overflowing the viewport. */
+  .shero__actions { flex-wrap: wrap; width: 100%; }
+  .shero__actions .btn { flex: 1 1 160px; }
 
   /* ---- Contact Us at phone widths ---- */
   .offices__inner { padding-block: 64px; gap: 32px; }
@@ -2307,6 +2511,20 @@ ul { margin: 0; padding: 0; list-style: none; }
   /* ---- Get Started at phone widths ---- */
   .signup__inner { padding-block: 64px; gap: 32px; }
   .signup__title { font-size: 28px; line-height: 40px; }
+
+  /* ---- Book A Call at phone widths ---- */
+  .book__inner { padding-block: 64px; gap: 32px; }
+  .bookbox, .bookform { padding: 20px; }
+  .bookbox { flex-direction: column; gap: 24px; }
+  .bookbox__info { width: 100%; padding-right: 0; padding-bottom: 24px; border-right: 0; border-bottom: 1px solid var(--border); }
+  .bookbox__meta { margin-top: 0; }
+  .bookform__row { flex-direction: column; gap: 20px; }
+  .bookconfirm { padding: 32px 20px; }
+
+  /* ---- Careers at phone widths ---- */
+  .careers__inner { padding-block: 64px 0; gap: 64px; }
+  .careers__inner--foot { padding-block: 0 64px; }
+  .careers__cta { padding: 32px 20px; }
 }
 
 /* The footer groups only collapse at mobile widths */

@@ -9,11 +9,12 @@ No build step, no framework, no dependencies — plain HTML files sharing one st
 holds every screen on one canvas — the owner's Figma account was locked and the designs
 were moved there. Everything in this build was originally implemented from `Portfolio`
 (`jF30…`); `Heroshe Website Redesign` (`BqQ7…`) is a moodboard plus a few frames and
-nothing more. **Audited against `Design Collection` on 2026-09-20 — results in §6.**
-Desktop pages match the build closely; the divergences found were the mobile Ship for
-Me frame (still open, §6), a second Contact Us variant (resolved — rejected, §6), an
-Annual pricing state (still open, §6), and a "Get started" flow that had no page yet
-(**built, see §1** — was the audit's top open item, now closed).
+nothing more. **Audited against `Design Collection` on 2026-09-20.** Desktop pages
+match the build closely; the divergences found were the mobile Ship for Me frame, a
+second Contact Us variant, an Annual pricing state, and a "Get started" flow that had
+no page yet. **All four are now resolved** — see §1 for what got built (Get Started,
+the real Pricing toggle, Ship for Me's CTA) and §4 for what got explicitly decided
+against (the Contact Us hero, the mobile blog teaser).
 
 **Figma tooling limits (learned the hard way):** `get_metadata` responses over ~24k
 characters now fail outright instead of saving to a file, and `get_design_context` on a
@@ -31,7 +32,7 @@ for those; keep using it for decisions that the diff alone won't convey.
 
 ## 1. What's built
 
-Nine pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320px:
+Eleven pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320px:
 
 | Page | File | Figma node |
 |---|---|---|
@@ -44,6 +45,8 @@ Nine pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320px
 | Contact Us | `contact-us.html` | 2686:3571 |
 | Pricing | `pricing.html` | 2686:4078 |
 | Get Started | `get-started.html` | `Design Collection` 32:3073 |
+| Book A Call | `book-a-call.html` | none — not in any Figma file |
+| Careers | `careers.html` | none — not in any Figma file |
 
 **Get Started is built** — the sign-up variant with a radio list (Ship for Me / Buy for
 Me / Buy for Others / Fulfil for Me) + Continue, per the owner's explicit pick of that
@@ -58,21 +61,52 @@ period (a typo in the Figma text itself). The four radio options are real
 `styles.css`) rather than swapped-image radio icons — a real form control, not a
 decorative asset. "Continue" is wired in `site.js`: it reads the checked radio's
 `value` (a page filename) and navigates there client-side; there's no backend, so this
-is routing, not submission. Every "Get started" / "Get started today" CTA across all
-other eight pages (~19 links, header + footer + Pricing's three plan cards) now points
-here instead of `#`.
+is routing, not submission. Every "Get started" / "Get started today" CTA across every
+other page (~19 links, header + footer + Pricing's three plan cards) points here
+instead of `#`.
+
+**"Book A Call" is per-product, not per-breakpoint** — Ship for Me is the one self-serve
+product (it's the only service with a real action in the Get Started flow), so its hero
+CTA is "Get started today" + "View Pricing" (`get-started.html` / `pricing.html`) at
+every width, not just on some Figma-found mobile variant. Buy for Me, Buy for Others,
+and Fulfil for Me stay consultative — their hero keeps "Book A Call", now wired to the
+new `book-a-call.html` instead of `#`. The second hero button needed a new style,
+`.btn--outline` (transparent + light border, for a secondary action on the dark teal
+hero) — not from Figma, since no frame pairs these two CTAs together.
+
+**Book A Call** (`book-a-call.html`) is a calendar-booking mockup, not from any Figma
+file — built because "Book A Call" needed *something* to link to and there's no real
+booking backend to integrate. It's a real current-month calendar (`Date`-driven in
+`site.js`, not hardcoded dates), weekdays only — the site states Mon–Fri 9am–5pm
+everywhere else (Contact Us), so weekends are disabled and the generated time slots
+span those same hours. Selecting a day, then a time, reveals a short name/email/phone
+form; submitting it (no backend — client-side only) shows a static "Call requested!"
+confirmation. Building this surfaced a real, previously-latent site-wide CSS bug — see
+§3.
+
+**Careers** (`careers.html`) is also not from Figma, and **deliberately has no job
+listings**. Fabricating specific open roles would be a false claim about hiring status,
+unlike the calculator/calendar mockups which are obviously just UI demonstrations, not
+factual claims — so instead it reuses the About page's real content (Core Values as
+"What We Value", the same team photos as "Life At Heroshe") plus an honest "No open
+roles right now" state with a `mailto:helpdesk@heroshe.com` CTA. The header/footer
+Company dropdown and footer Company column now link here on every page.
 
 Pricing isn't in the header nav (see §4) — it's reached from Ship for Me's calculator via
 "Check pricing details here" (`.calcbox__link`, previously `href="#"`).
 
-Pricing's "Compare all features" table is the site's first genuinely interactive
-component — everywhere else that *looks* interactive (the Ship for Me calculator, the
-Quarterly/Annual toggle on this same page) is a static mockup with no real behavior. On
-mobile, comparing 3 plans side-by-side doesn't fit without horizontal scroll, which is a
-poor experience for a table people specifically want to compare — so below 767px the
-table collapses to 2 columns (Features + one selected plan), switched by real `.ptabs`
-buttons wired in `site.js`. Above 767px nothing changes: same table, all three plan
-columns, no JS involved.
+Pricing's Quarterly/Annual toggle and "Compare all features" table are the site's two
+genuinely interactive components — everywhere else that *looks* interactive (the Ship
+for Me calculator) is a static mockup with no real behavior. The toggle is real: the
+three plan prices/cadences and the one comparison-table row that changes by billing
+period (`data-quarterly`/`data-annual` attributes, swapped by `site.js`) update when you
+click Quarterly/Annual — $0/$35/$60 "every 3 months" ⇄ $0/$130/$220 "per year", and US
+air shipping $20/$14/$12 ⇄ $15/$13/$11 per kg. Every other table row is identical
+between periods, so nothing else needed a second value. On mobile, comparing 3 plans
+side-by-side doesn't fit without horizontal scroll, which is a poor experience for a
+table people specifically want to compare — so below 767px the table collapses to 2
+columns (Features + one selected plan), switched by real `.ptabs` buttons. Above 767px
+nothing changes: same table, all three plan columns.
 
 Every page shares one `<header>`, one `<footer>`, `styles.css`, and `site.js`. The header's
 **Products** dropdown links all four service pages and marks the current page with
@@ -108,36 +142,46 @@ keeping from the form — a `mailto:helpdesk@heroshe.com` / `tel:` line so the p
 ```
 index.html, about.html, ship-for-me.html,       ← one file per page, semantic markup,
 buy-for-me.html, buy-for-others.html,             BEM-ish class names, no inline styles
-fulfil-for-me.html, get-started.html              except the occasional footer-column width
+fulfil-for-me.html, get-started.html,             except the occasional footer-column width
+book-a-call.html, careers.html
 
-styles.css   (~2320 lines)                       ← single shared stylesheet
-site.js      (~105 lines)                        ← mobile drawer + Products dropdown +
+styles.css   (~2540 lines)                       ← single shared stylesheet
+site.js      (~255 lines)                        ← mobile drawer + Products dropdown +
                                                      footer-accordion behavior (every page),
-                                                     Pricing's mobile plan-tabs, and Get
-                                                     Started's Continue routing (all guarded,
+                                                     Pricing's toggle + mobile plan-tabs,
+                                                     Get Started's Continue routing, and
+                                                     Book A Call's calendar (all guarded,
                                                      no-ops on pages without their markup)
 
 assets/
   icons/     (108K, SVGs)                        ← nav chevrons, hamburger, star, compass,
                                                      bell, service-specific glyphs, plus
                                                      Pricing's check-circle / dash-circle /
-                                                     cube icons. Get Started needed no new
-                                                     icons — its radios are real
-                                                     <input type="radio"> styled in CSS, not
-                                                     the two swapped-image icons Figma used.
+                                                     cube icons. Get Started, Book A Call,
+                                                     and Careers needed no new icons — Get
+                                                     Started's radios are real
+                                                     <input type="radio"> styled in CSS
+                                                     (not Figma's two swapped-image icons),
+                                                     Book A Call's calendar/slots are plain
+                                                     buttons, and Careers reuses About's
+                                                     star icon and team photos verbatim.
   img/
     about/   (3.1M)   ship/  (1.4M)   fulfil/ (1.4M)
     others/  (1.0M)   buy/   (604K)   pricing/ (new)
                                                    ← one folder per page, JPGs re-encoded
                                                      from Figma PNG exports (sips -Z 1800,
                                                      format + resize as separate passes —
-                                                     see the sips gotcha in §3). Contact Us
-                                                     and Get Started have no image of their
-                                                     own — neither has a hero (see §1) — so
-                                                     there's no contact/ or get-started/
-                                                     folder. pricing/map.png is a transparent
-                                                     PNG, not a JPG — it's a decorative
-                                                     watermark, not a photo (see §3).
+                                                     see the sips gotcha in §3). Contact Us,
+                                                     Get Started, and Book A Call have no
+                                                     image of their own — none has a hero
+                                                     (see §1) — so there's no contact/,
+                                                     get-started/, or book-a-call/ folder.
+                                                     Careers reuses about/team-*.jpg rather
+                                                     than duplicating them into a careers/
+                                                     folder. pricing/map.png is a
+                                                     transparent PNG, not a JPG — it's a
+                                                     decorative watermark, not a photo
+                                                     (see §3).
 ```
 
 ### `styles.css` layout (top to bottom)
@@ -154,8 +198,10 @@ assets/
 10. Contact Us page block
 11. Pricing page block
 12. Get Started page block
-13. **Tablet breakpoint** (`max-width: 1300px` down through `900px`, several nested queries)
-14. **Mobile breakpoint** (`max-width: 767px`, plus a `359px` tightening)
+13. Book A Call page block
+14. Careers page block
+15. **Tablet breakpoint** (`max-width: 1300px` down through `900px`, several nested queries)
+16. **Mobile breakpoint** (`max-width: 767px`, plus a `359px` tightening)
 
 Each page-specific block is a comment-delimited section with the Figma node ID in the
 header comment, e.g.:
@@ -191,6 +237,22 @@ header comment, e.g.:
 **No build tooling.** Plain files, Google Fonts (Onest) loaded via `<link>`, images
 manually re-encoded to JPG and resized with `sips`. Chosen for simplicity — there's no
 bundler, no package.json, nothing to install.
+
+**A global `[hidden] { display: none !important; }` reset exists near the top of
+`styles.css` — do not remove it, and do not give a component both a `display` value and
+`hidden`-based visibility toggling without it.** The browser's own default stylesheet
+sets `[hidden] { display: none }`, but that's a *user-agent* rule, and author CSS beats
+UA CSS regardless of specificity. Any component class that sets its own `display`
+(`.bookform { display: flex; }`, say) silently wins over `[hidden]` the moment both
+apply to the same element — the attribute stays `true`, `element.hidden` still reads
+`true`, but the element keeps rendering anyway. Found live: Book A Call's form and
+confirmation box (both `hidden` by default, both `display: flex` components) stayed
+visible after submission despite `hidden` being set correctly in `site.js` — the JS was
+right, only the CSS cascade was wrong. This was a real, previously-latent bug: nothing
+before Book A Call ever combined an explicit `display` with `hidden`-attribute toggling
+(Get Started's form just navigates away, it never re-hides itself), so it had never
+surfaced. The global reset fixes every past and future instance in one place instead of
+special-casing each component.
 
 **Fixed-composition sections scale as one unit via CSS container queries, not
 transform-per-breakpoint.** Two sections (Buy for Others' "Customers to Serve", Fulfil
@@ -355,22 +417,26 @@ second layer underneath.
   intentional design variance. Normalizing keeps the site's rhythm consistent instead of
   reproducing what look like rounding artifacts.
 - **Mobile Figma frames exist only for Home and Ship for Me** (`Design Collection`).
-  Home's is already built. **Ship for Me's is not, and it is a genuinely different design,
-  not the desktop reflowed** — see §6 item 2. Every other page (About, Buy for Me, Buy for
-  Others, Fulfil for Me, Contact Us, Pricing) still has no mobile frame; those mobile
+  Home's is already built. Ship for Me's mobile frame differs from its desktop frame in
+  several places (hero copy/CTA, feature cards, Who We Serve labels, FAQ vs. a blog
+  teaser) — **resolved as per-product content, not a mobile-specific redesign**: the
+  hero CTA difference was real and is now built everywhere (see §1, "Book A Call is
+  per-product"), but the features/labels/FAQ differences were not — Ship for Me's
+  existing responsive build (features, Who We Serve, FAQ identical at every width) is
+  correct and unchanged, and the blog teaser was explicitly rejected (no blog on this
+  site). Every other page (About, Buy for Me, Buy for Others, Fulfil for Me, Contact Us,
+  Pricing, Get Started, Book A Call, Careers) still has no mobile frame; those mobile
   layouts are my own responsive design, unverified against any design file.
 - **Pricing's header doesn't match its own Figma frame.** That frame specifies "Products
   / Company / Blog / Login / Get started" — a wider nav than any other page in the file.
   Per explicit instruction, it uses the same header every other page uses (Products /
   Company / Get started) instead. Same reasoning as the Contact Us footer deviation
   above: one frame's own variant isn't a reason to fork the shared component.
-- **Pricing's "Quarterly pricing / Annual pricing" toggle is a static, non-functional
-  mockup** — plain `<span>`s, not real controls, same convention as the Ship for Me
-  calculator (`.calcbox`, which is also all static `<span>`s dressed as inputs). Figma
-  only supplies the Quarterly-pricing state for this frame — no annual numbers exist
-  anywhere in the file to switch to — so there's nothing to wire even if it were made
-  interactive. If annual pricing ever gets designed, this is the thing to come back and
-  make real.
+- **Pricing's "Quarterly pricing / Annual pricing" toggle is now real** — real
+  `<button>`s, wired in `site.js` (see §1). `Design Collection` supplies the Annual
+  state Figma's original `Portfolio` frame didn't have, which is what made this
+  buildable; the Ship for Me calculator (`.calcbox`) is still all static `<span>`s
+  dressed as inputs, unrelated and unchanged.
 - **Contact Us reuses the site's shared footer as-is**, not the page-specific footer
   Figma actually specifies for that frame (a "Contact Support" column with
   helpdesk@heroshe.com / 0201 887 0034 in place of the "Support" column, and "Blog"
@@ -393,14 +459,15 @@ second layer underneath.
   Customs duties" hero claim) rather than invented — verify it against real
   pricing/ops before launch regardless, since none of it came from Figma or the
   business.
-- **The header's "Company" dropdown now links to About and Contact Us** (same
+- **The header's "Company" dropdown now links to About, Careers, and Contact Us** (same
   `.has-menu`/`.navmenu` pattern as "Products" — no open-state exists for it in Figma
   either, so it follows the site's own surface/shadow language, same as Products always
-  did). Still a stopgap: once Careers/Blog have real pages, they likely belong here too.
-- **All primary CTAs point to `href="#"`**: "Get started" / "Get started today" (header
-  + footer), "Book a Call" (every inner-page hero), the FAQ chevrons' target action, and
-  every social icon in the footer (X, LinkedIn, Facebook, Instagram, YouTube). None of
-  these have a real destination yet.
+  did). No Blog — deliberately out of scope, see §1.
+- **Remaining CTAs still pointing at `href="#"`**: the footer's Services column
+  (Shipping, Sourcing, Inventory Management, Stores discovery — no dedicated pages
+  exist for these), the FAQ chevrons' target action, and every social icon in the
+  footer (X, LinkedIn, Facebook, Instagram, YouTube). "Get started" / "Get started
+  today" and "Book A Call" are now wired everywhere (see §1).
 
 ---
 
@@ -425,38 +492,23 @@ starting a second one on the same port).
 
 Roughly in priority order:
 
-1. **Rebuild Ship for Me's mobile layout from its Figma frame** (`Design Collection`,
-   1440-wide desktop sits beside a 390px mobile). The mobile design differs from desktop:
-   hero button pair "Get started today" + "View Pricing" (desktop: "Book A Call");
-   headline "From US, UK…" (desktop: "From **The** US, UK…"); Who We Serve relabels MSME →
-   "Small & large scale businesses" and shuffles which photo sits under which label; the
-   features section is **Split Pay / Free Pickup at Lagos Warehouse / Shipping Calculator**
-   (desktop: Doorstep Delivery / Real-time Tracking / Flexible Payment Options) under a
-   different intro line; and a **"Find Shipping Tips for Your Business?" blog teaser with
-   3 cards replaces the FAQ**. Desktop and mobile can't both be current — **ask the owner
-   which is authoritative before building.**
-2. **Build the real Quarterly/Annual toggle on Pricing.** The Annual state is now
-   designed: $0 / **$130** / **$220** "per year" (Quarterly: $0 / $35 / $60 "every 3
-   months"), and the first table row changes — US air shipping Basic/PRO/PREMIUM becomes
-   **$15 / $13 / $11** per kg (Quarterly: $20 / $14 / $12). Every other row is identical.
-   The toggle is currently a static mockup.
-3. **Wire the remaining CTAs and footer/social links** to real destinations once they
-   exist (calendar booking for "Book A Call", social profiles). "Get started" is done
-   (see §1) — this is everything else still pointing at `#`.
-4. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
-   currently only has About and Contact Us — see §4).
-5. **Get mobile Figma frames for the four service pages, About, Contact Us, Pricing,
-   and Get Started**, or explicit sign-off that the current responsive adaptations (§4)
-   are good enough as-is.
-6. **Decide on a real backend/CMS story** if this moves past a static prototype —
-   nothing here has any dynamic behavior; it's markup and CSS only. Two things are
-   waiting on this specifically: the Contact Us form, deliberately left out (see §1),
-   and Get Started's "Continue", which currently just routes client-side to a service
-   page rather than submitting a real sign-up (see §1) — revisit both once there's a
-   backend able to receive submissions.
-
-**Decided, no longer open:** Contact Us will **not** get a hero — the newer
-`Design Collection` variant (full-bleed photo, man in red, arms outstretched) was
-considered and rejected; the page stays as built (§1). Its China-office "(GMT)" vs.
-every other office's "(GMT+1)" is still worth a confirm-it's-not-a-typo check with the
-owner, independent of the hero decision.
+1. **Wire the remaining CTAs and footer/social links** to real destinations once they
+   exist: the footer's Services column (Shipping, Sourcing, Inventory Management,
+   Stores discovery — no dedicated pages exist yet), the FAQ chevrons' target action,
+   and the five social icons (X, LinkedIn, Facebook, Instagram, YouTube). "Get
+   started"/"Book A Call" are done (see §1) — this is everything else still on `#`.
+2. **Get mobile Figma frames for About, Buy for Me, Buy for Others, Fulfil for Me,
+   Contact Us, Pricing, Get Started, Book A Call, and Careers**, or explicit sign-off
+   that the current responsive adaptations (§4) are good enough as-is. (Home and Ship
+   for Me already have real frames — see §1/§4 for how Ship for Me's was resolved.)
+3. **Decide on a real backend/CMS story** if this moves past a static prototype —
+   nothing here has any dynamic behavior; it's markup and CSS only. Four things are
+   waiting on this specifically, all deliberately left client-side-only for now: the
+   Contact Us form (never built, see §1), Get Started's "Continue" (routes to a page,
+   doesn't submit anything), Book A Call's confirmation (a static message, no booking
+   is actually made), and Careers' "Email Us Your CV" (a `mailto:` link, not a real
+   application flow).
+4. **Confirm Contact Us's China-office "(GMT)" vs. every other office's "(GMT+1)"**
+   isn't a typo — a `Design Collection` variant of that page has the "(GMT)" version;
+   the live build already uses "(GMT+1)" everywhere, so no code change is pending, just
+   a fact-check with the owner.

@@ -44,6 +44,7 @@
           </button>
           <div class="navmenu" id="menu-company">
             <a class="navmenu__link" href="about.html">About</a>
+            <a class="navmenu__link" href="careers.html">Careers</a>
             <a class="navmenu__link" href="contact-us.html">Contact Us</a>
           </div>
         </li>
@@ -64,9 +65,9 @@
       <h1 class="phero__title">Choose a plan that's right for you</h1>
       <p class="phero__sub">We make it easier for businesses to source, buy, ship, and fulfill products worldwide.</p>
     </div>
-    <div class="phero__toggle">
-      <span class="phero__toggle-btn is-active">Quarterly pricing</span>
-      <span class="phero__toggle-btn">Annual pricing</span>
+    <div class="phero__toggle" role="tablist" aria-label="Billing period">
+      <button type="button" class="phero__toggle-btn is-active" data-billing="quarterly" aria-selected="true">Quarterly pricing</button>
+      <button type="button" class="phero__toggle-btn" data-billing="annual" aria-selected="false">Annual pricing</button>
     </div>
   </div>
 </section>
@@ -86,7 +87,7 @@
         <p class="pcard__desc">For individuals seeking reliable, cost-effective shipping</p>
       </div>
       <div class="pcard__bottom">
-        <p class="pcard__price"><span class="pcard__amount">$0</span><span class="pcard__cadence">every 3 months</span></p>
+        <p class="pcard__price"><span class="pcard__amount" data-quarterly="$0" data-annual="$0">$0</span><span class="pcard__cadence" data-quarterly="every 3 months" data-annual="per year">every 3 months</span></p>
         <a class="btn pcard__cta" href="get-started.html">Get Started</a>
       </div>
     </div>
@@ -103,7 +104,7 @@
         <p class="pcard__desc">For individuals and businesses needing faster, smarter shipping</p>
       </div>
       <div class="pcard__bottom">
-        <p class="pcard__price"><span class="pcard__amount">$35</span><span class="pcard__cadence">every 3 months</span></p>
+        <p class="pcard__price"><span class="pcard__amount" data-quarterly="$35" data-annual="$130">$35</span><span class="pcard__cadence" data-quarterly="every 3 months" data-annual="per year">every 3 months</span></p>
         <a class="btn pcard__cta" href="get-started.html">Get Started</a>
       </div>
     </div>
@@ -119,7 +120,7 @@
         <p class="pcard__desc">For those requiring premium, fully customized shipping</p>
       </div>
       <div class="pcard__bottom">
-        <p class="pcard__price"><span class="pcard__amount">$60</span><span class="pcard__cadence">every 3 months</span></p>
+        <p class="pcard__price"><span class="pcard__amount" data-quarterly="$60" data-annual="$220">$60</span><span class="pcard__cadence" data-quarterly="every 3 months" data-annual="per year">every 3 months</span></p>
         <a class="btn pcard__cta" href="get-started.html">Get Started</a>
       </div>
     </div>
@@ -161,9 +162,9 @@
         <tbody>
           <tr>
             <td>Air Shipping From the US, to NG</td>
-            <td class="ptable__value ptable__value--basic">$20/ kg</td>
-            <td class="ptable__value ptable__value--pro">$14/ kg</td>
-            <td class="ptable__value ptable__value--premium">$12/ kg</td>
+            <td class="ptable__value ptable__value--basic" data-quarterly="$20/ kg" data-annual="$15/ kg">$20/ kg</td>
+            <td class="ptable__value ptable__value--pro" data-quarterly="$14/ kg" data-annual="$13/ kg">$14/ kg</td>
+            <td class="ptable__value ptable__value--premium" data-quarterly="$12/ kg" data-annual="$11/ kg">$12/ kg</td>
           </tr>
           <tr>
             <td>Air Shipping From the UK, to NG</td>
@@ -293,7 +294,7 @@
       </summary>
       <div class="footer__links">
         <a href="about.html">About</a>
-        <a href="#">Careers</a>
+        <a href="careers.html">Careers</a>
       </div>
     </details>
 
