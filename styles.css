@@ -95,15 +95,19 @@ ul { margin: 0; padding: 0; list-style: none; }
 
 /* Secondary action next to a primary .btn on a dark (teal) hero — e.g. Ship
    for Me's "View Pricing" beside "Get started today". Not in any Figma
-   frame pulled so far; styled to read clearly against .ahero's teal without
-   competing with the primary yellow fill. */
-.btn--outline {
-  background: transparent;
-  border: 1px solid var(--surface);
+   frame pulled so far. A boxed/outlined second button would be a new button
+   style the site doesn't otherwise have; a plain link reuses the treatment
+   already established for text on this exact teal background (.nav__item a
+   — light text, hovers to the primary yellow), so nothing new is invented. */
+.hero-link {
+  padding-block: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 24px;
   color: var(--surface);
-  padding-block: calc(12px - 1px);
+  text-decoration: underline;
 }
-.btn--outline:hover { background: rgba(250, 250, 250, .1); }
+.hero-link:hover { color: var(--primary); }
 
 /* ---------- Logo ---------- */
 .logo { display: block; position: relative; overflow: hidden; }
@@ -1876,7 +1880,7 @@ ul { margin: 0; padding: 0; list-style: none; }
 .soption__title { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--on-surface); }
 .soption__desc { font-size: 14px; line-height: 24px; color: var(--text-subdued); }
 
-.signup__submit { width: 100%; padding: 16px 10px; font-size: 16px; }
+.signup__submit { width: 100%; }
 
 /* ============================================================
    Book A Call page — not in any Figma file. A calendar-booking mockup for
@@ -1988,7 +1992,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 12px;
 }
 .bookform__row { display: flex; gap: 24px; }
-.bookform__submit { align-self: flex-start; }
+.bookform__submit { align-self: flex-start; white-space: normal; text-align: left; }
 
 .bookconfirm {
   width: 100%;
@@ -2418,11 +2422,11 @@ ul { margin: 0; padding: 0; list-style: none; }
   /* ---- Ship for Me at phone widths ---- */
   .shero__title { font-size: 40px; line-height: 52px; letter-spacing: -0.4px; }
   .shero__sub   { font-size: 16px; line-height: 28px; }
-  /* Two hero buttons ("Get started today" + "View Pricing") no longer fit
-     side by side once the column narrows below ~420px — wrap instead of
-     overflowing the viewport. */
-  .shero__actions { flex-wrap: wrap; width: 100%; }
-  .shero__actions .btn { flex: 1 1 160px; }
+  /* The hero button ("Get started today") and the "View Pricing" text link
+     no longer fit on one line once the column narrows below ~420px — stack
+     instead of overflowing the viewport. */
+  .shero__actions { flex-wrap: wrap; width: 100%; row-gap: 16px; }
+  .shero__actions .btn { width: 100%; }
 
   /* ---- Contact Us at phone widths ---- */
   .offices__inner { padding-block: 64px; gap: 32px; }

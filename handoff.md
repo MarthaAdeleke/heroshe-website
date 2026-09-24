@@ -70,9 +70,12 @@ product (it's the only service with a real action in the Get Started flow), so i
 CTA is "Get started today" + "View Pricing" (`get-started.html` / `pricing.html`) at
 every width, not just on some Figma-found mobile variant. Buy for Me, Buy for Others,
 and Fulfil for Me stay consultative — their hero keeps "Book A Call", now wired to the
-new `book-a-call.html` instead of `#`. The second hero button needed a new style,
-`.btn--outline` (transparent + light border, for a secondary action on the dark teal
-hero) — not from Figma, since no frame pairs these two CTAs together.
+new `book-a-call.html` instead of `#`. "View Pricing" is a plain `.hero-link` (light
+text, underlined, hovers to the primary yellow) — not from Figma, since no frame pairs
+these two CTAs together. A first pass gave it a bordered `.btn--outline` treatment, but
+that introduced a button style the site doesn't otherwise have anywhere (every other
+`.btn` is a solid fill, no outlines); `.hero-link` instead reuses the plain-text
+treatment already established for links on this exact teal background (`.nav__item a`).
 
 **Book A Call** (`book-a-call.html`) is a calendar-booking mockup, not from any Figma
 file — built because "Book A Call" needed *something* to link to and there's no real
@@ -254,6 +257,17 @@ before Book A Call ever combined an explicit `display` with `hidden`-attribute t
 surfaced. The global reset fixes every past and future instance in one place instead of
 special-casing each component.
 
+**Every real `.btn`/`<button>`/`<a>` on the site must carry one of `.btn--lg` /
+`.btn--md` / `.btn--sm` / `.btn--xs` (§2, `styles.css` line ~91) — never a custom
+padding value, and never `.btn` bare.** `.btn` itself sets no padding, so a bare
+`class="btn"` (Careers' "Email Us Your CV") or a `<button class="btn ...">` with no size
+modifier (Book A Call's "Confirm Call", which had only `.bookform__submit { align-self:
+... }`) falls back to the browser's own tiny default button/anchor padding — visibly
+cramped next to every properly-sized button on the site. Get Started's "Continue" had
+the opposite mistake: a one-off custom `padding: 16px 10px` on `.signup__submit` instead
+of reusing `.btn--lg`. All three were introduced in the same work session and caught
+together — when adding a new page's CTA, grep for the four `.btn--*` modifiers first
+rather than eyeballing a padding value that "looks about right".
 **Fixed-composition sections scale as one unit via CSS container queries, not
 transform-per-breakpoint.** Two sections (Buy for Others' "Customers to Serve", Fulfil
 for Me's "Grow Your Business Beyond Borders") are a photo + several absolutely-positioned
