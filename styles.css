@@ -1775,6 +1775,77 @@ ul { margin: 0; padding: 0; list-style: none; }
 .ptable__dash { height: auto; }  /* the dash SVG is a 24×1.7 line, not a 24×24 glyph — let it keep its own thin aspect ratio */
 
 /* ============================================================
+   Get Started page — Figma "Design Collection" node 32:3073
+   (sign-up variant 1: radio list + Continue). No hero in this design —
+   header sits directly above the centered form on the plain surface.
+   ============================================================ */
+.signup { background: var(--surface); }
+.signup__inner {
+  max-width: 620px;
+  margin-inline: auto;
+  padding: 160px var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+}
+.signup__head { display: flex; flex-direction: column; gap: 8px; }
+.signup__eyebrow { font-size: 16px; line-height: 32px; color: var(--text-subdued); }
+.signup__title {
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 56px;
+  letter-spacing: -0.32px;
+  color: var(--on-surface);
+}
+
+.signup__form { display: flex; flex-direction: column; gap: 40px; }
+.signup__options { display: flex; flex-direction: column; gap: 24px; }
+
+.soption {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 12px 16px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  cursor: pointer;
+}
+/* Real radio inputs, not the two static Figma icons (a filled ring, an empty
+   ring) — a form control belongs in markup a keyboard/screen reader can
+   operate, not a swapped image. appearance:none + a generated dot reproduces
+   the exact look without needing two near-identical asset states. */
+.soption input[type="radio"] {
+  appearance: none;
+  -webkit-appearance: none;
+  flex: none;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  border: 2px solid var(--border);
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+  cursor: pointer;
+}
+.soption input[type="radio"]::before {
+  content: "";
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: var(--on-surface);
+  transform: scale(0);
+  transition: transform .12s ease;
+}
+.soption input[type="radio"]:checked { border-color: var(--on-surface); }
+.soption input[type="radio"]:checked::before { transform: scale(1); }
+
+.soption__body { display: flex; flex-direction: column; gap: 4px; }
+.soption__title { font-size: 16px; font-weight: 600; line-height: 24px; color: var(--on-surface); }
+.soption__desc { font-size: 14px; line-height: 24px; color: var(--text-subdued); }
+
+.signup__submit { width: 100%; padding: 16px 10px; font-size: 16px; }
+
+/* ============================================================
    Tablet / intermediate widths
    (the Figma file specifies 1440px and 393px only — these fill the gap)
    ============================================================ */
@@ -2232,6 +2303,10 @@ ul { margin: 0; padding: 0; list-style: none; }
   .ptable[data-active-plan="basic"]   .ptable__value--basic,
   .ptable[data-active-plan="pro"]     .ptable__value--pro,
   .ptable[data-active-plan="premium"] .ptable__value--premium { display: table-cell; }
+
+  /* ---- Get Started at phone widths ---- */
+  .signup__inner { padding-block: 64px; gap: 32px; }
+  .signup__title { font-size: 28px; line-height: 40px; }
 }
 
 /* The footer groups only collapse at mobile widths */

@@ -10,9 +10,10 @@ holds every screen on one canvas — the owner's Figma account was locked and th
 were moved there. Everything in this build was originally implemented from `Portfolio`
 (`jF30…`); `Heroshe Website Redesign` (`BqQ7…`) is a moodboard plus a few frames and
 nothing more. **Audited against `Design Collection` on 2026-09-20 — results in §6.**
-Desktop pages match the build closely; the divergences are the mobile Ship for Me frame,
-a second Contact Us variant, an Annual pricing state, and a "Get started" flow that has
-no page yet.
+Desktop pages match the build closely; the divergences found were the mobile Ship for
+Me frame (still open, §6), a second Contact Us variant (resolved — rejected, §6), an
+Annual pricing state (still open, §6), and a "Get started" flow that had no page yet
+(**built, see §1** — was the audit's top open item, now closed).
 
 **Figma tooling limits (learned the hard way):** `get_metadata` responses over ~24k
 characters now fail outright instead of saving to a file, and `get_design_context` on a
@@ -30,7 +31,7 @@ for those; keep using it for decisions that the diff alone won't convey.
 
 ## 1. What's built
 
-Eight pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320px:
+Nine pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320px:
 
 | Page | File | Figma node |
 |---|---|---|
@@ -42,6 +43,24 @@ Eight pages, all cross-linked, all responsive at 1440px / ~1000px / 393px / 320p
 | Fulfil for Me | `fulfil-for-me.html` | 2686:3134 |
 | Contact Us | `contact-us.html` | 2686:3571 |
 | Pricing | `pricing.html` | 2686:4078 |
+| Get Started | `get-started.html` | `Design Collection` 32:3073 |
+
+**Get Started is built** — the sign-up variant with a radio list (Ship for Me / Buy for
+Me / Buy for Others / Fulfil for Me) + Continue, per the owner's explicit pick of that
+variant over the per-service-button one. Deliberate departures from the Figma node:
+uses the site's normal shared header (Products / Company / Get started — **no Login**,
+per instruction) instead of the frame's own nav; no hero (per instruction, matching the
+Contact Us precedent); the shared footer instead of the frame's one-off "Contact
+Support" footer variant, for the same consistency reason documented for Contact Us
+below; and the Fulfil for Me option's description has its trailing comma fixed to a
+period (a typo in the Figma text itself). The four radio options are real
+`<input type="radio">` elements styled with `appearance: none` (see `.soption` in
+`styles.css`) rather than swapped-image radio icons — a real form control, not a
+decorative asset. "Continue" is wired in `site.js`: it reads the checked radio's
+`value` (a page filename) and navigates there client-side; there's no backend, so this
+is routing, not submission. Every "Get started" / "Get started today" CTA across all
+other eight pages (~19 links, header + footer + Pricing's three plan cards) now points
+here instead of `#`.
 
 Pricing isn't in the header nav (see §4) — it's reached from Ship for Me's calculator via
 "Check pricing details here" (`.calcbox__link`, previously `href="#"`).
@@ -89,19 +108,23 @@ keeping from the form — a `mailto:helpdesk@heroshe.com` / `tel:` line so the p
 ```
 index.html, about.html, ship-for-me.html,       ← one file per page, semantic markup,
 buy-for-me.html, buy-for-others.html,             BEM-ish class names, no inline styles
-fulfil-for-me.html                                except the occasional footer-column width
+fulfil-for-me.html, get-started.html              except the occasional footer-column width
 
-styles.css   (~2250 lines)                       ← single shared stylesheet
-site.js      (~95 lines)                         ← mobile drawer + Products dropdown +
+styles.css   (~2320 lines)                       ← single shared stylesheet
+site.js      (~105 lines)                        ← mobile drawer + Products dropdown +
                                                      footer-accordion behavior (every page),
-                                                     plus Pricing's mobile plan-tabs (guarded,
-                                                     no-ops on every other page)
+                                                     Pricing's mobile plan-tabs, and Get
+                                                     Started's Continue routing (all guarded,
+                                                     no-ops on pages without their markup)
 
 assets/
   icons/     (108K, SVGs)                        ← nav chevrons, hamburger, star, compass,
                                                      bell, service-specific glyphs, plus
                                                      Pricing's check-circle / dash-circle /
-                                                     cube icons
+                                                     cube icons. Get Started needed no new
+                                                     icons — its radios are real
+                                                     <input type="radio"> styled in CSS, not
+                                                     the two swapped-image icons Figma used.
   img/
     about/   (3.1M)   ship/  (1.4M)   fulfil/ (1.4M)
     others/  (1.0M)   buy/   (604K)   pricing/ (new)
@@ -109,8 +132,9 @@ assets/
                                                      from Figma PNG exports (sips -Z 1800,
                                                      format + resize as separate passes —
                                                      see the sips gotcha in §3). Contact Us
-                                                     has no image of its own — its hero was
-                                                     cut (see §1) — so there's no contact/
+                                                     and Get Started have no image of their
+                                                     own — neither has a hero (see §1) — so
+                                                     there's no contact/ or get-started/
                                                      folder. pricing/map.png is a transparent
                                                      PNG, not a JPG — it's a decorative
                                                      watermark, not a photo (see §3).
@@ -129,8 +153,9 @@ assets/
 9. Fulfil for Me page block
 10. Contact Us page block
 11. Pricing page block
-12. **Tablet breakpoint** (`max-width: 1300px` down through `900px`, several nested queries)
-13. **Mobile breakpoint** (`max-width: 767px`, plus a `359px` tightening)
+12. Get Started page block
+13. **Tablet breakpoint** (`max-width: 1300px` down through `900px`, several nested queries)
+14. **Mobile breakpoint** (`max-width: 767px`, plus a `359px` tightening)
 
 Each page-specific block is a comment-delimited section with the Figma node ID in the
 header comment, e.g.:
@@ -355,14 +380,19 @@ second layer underneath.
   branching the markup for one page. The email/phone this would have surfaced are now
   shown in the page's own intro line instead (see §1), so the information isn't
   actually missing — it just lives at the top of the page rather than in the footer.
-- **FAQ copy is placeholder on all four service pages, and the placeholder is in Figma
-  itself.** Each page's design has one expanded answer; the build repeats it under every
-  question. **Ship for Me's design has the same question six times** ("How much does it
-  cost to ship from USA to Nigeria?") — the questions need authoring, not just answers.
-  **Buy for Me's one expanded answer is Ship for Me's pricing text** (in Figma too), so it
-  is wrong-page content; Buy for Others' and Fulfil for Me's are on-topic. Fulfil for Me's
-  design also lists its first question twice (six rows); the build deduped to five. 22
-  answers need real copy. This is a content gap owned by whoever writes the copy.
+- **FAQ copy was placeholder on all four service pages — now fixed, all real copy.** The
+  placeholder originated in Figma itself: each page's design had one expanded answer,
+  repeated under every question. Ship for Me's design even had the same question six
+  times, so five of its six questions were authored from scratch, not just answered;
+  its "How much does it cost to ship from USA to Nigeria?" row keeps its original
+  Figma answer unchanged. Buy for Me's six questions were already real (only its
+  answer was wrong-page content, Ship for Me's pricing text) — all six answers are
+  new. Buy for Others and Fulfil for Me each had one on-topic real answer (row 1, kept
+  unchanged) and needed the other four written. All new copy is grounded in facts
+  already stated elsewhere on that same page (features, how-it-works steps, the "zero
+  Customs duties" hero claim) rather than invented — verify it against real
+  pricing/ops before launch regardless, since none of it came from Figma or the
+  business.
 - **The header's "Company" dropdown now links to About and Contact Us** (same
   `.has-menu`/`.navmenu` pattern as "Products" — no open-state exists for it in Figma
   either, so it follows the site's own surface/shadow language, same as Products always
@@ -395,16 +425,7 @@ starting a second one on the same port).
 
 Roughly in priority order:
 
-1. **Build the "Get started" / Login flow** — this is the destination for the ~17 dead
-   "Get started" buttons and it is designed (3 frames in `Design Collection`): "Which of
-   our services are you **signing up** for?" with Ship for Me / Buy for Me / Buy for
-   Others / Fulfil for Me, in two variants (radio list + Continue, or per-service
-   buttons), plus a "logging in to" variant. Product logic visible in the design: only
-   **Ship for Me** has a self-serve action ("Start Shipping" / "Continue"); the other
-   three are **"Book A Call"**. Needs a decision on which sign-up variant, and whether
-   Login exists at all (the nav we use has no Login link). Design bug to flag: the Fulfil
-   for Me description ends in a stray comma and is set in a different font.
-2. **Rebuild Ship for Me's mobile layout from its Figma frame** (`Design Collection`,
+1. **Rebuild Ship for Me's mobile layout from its Figma frame** (`Design Collection`,
    1440-wide desktop sits beside a 390px mobile). The mobile design differs from desktop:
    hero button pair "Get started today" + "View Pricing" (desktop: "Book A Call");
    headline "From US, UK…" (desktop: "From **The** US, UK…"); Who We Serve relabels MSME →
@@ -414,28 +435,28 @@ Roughly in priority order:
    different intro line; and a **"Find Shipping Tips for Your Business?" blog teaser with
    3 cards replaces the FAQ**. Desktop and mobile can't both be current — **ask the owner
    which is authoritative before building.**
-3. **Contact Us has a second, newer variant** — a full-bleed photo hero (man in red, arms
-   outstretched) with centred "Contact Us" title, replacing the teal hero with the
-   woman's portrait. The build cut the hero entirely (§1); decide whether the new one
-   brings it back. Copy change in the new variant: China office hours read "(GMT)"
-   where every other variant says "(GMT+1)" — confirm it isn't a typo.
-4. **Build the real Quarterly/Annual toggle on Pricing.** The Annual state is now
+2. **Build the real Quarterly/Annual toggle on Pricing.** The Annual state is now
    designed: $0 / **$130** / **$220** "per year" (Quarterly: $0 / $35 / $60 "every 3
    months"), and the first table row changes — US air shipping Basic/PRO/PREMIUM becomes
    **$15 / $13 / $11** per kg (Quarterly: $20 / $14 / $12). Every other row is identical.
    The toggle is currently a static mockup.
-5. **Real FAQ copy — 22 answers across all four service pages** (see §4). Every question
-   on a page currently shows that page's single Figma-supplied answer. Buy for Me is the
-   urgent one: it repeats Ship for Me's pricing answer, so it's showing factually wrong
-   content, not just placeholder content.
-6. **Wire the remaining CTAs and footer/social links** to real destinations once they
-   exist (signup flow, calendar booking, social profiles).
-7. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
+3. **Wire the remaining CTAs and footer/social links** to real destinations once they
+   exist (calendar booking for "Book A Call", social profiles). "Get started" is done
+   (see §1) — this is everything else still pointing at `#`.
+4. **Extend the "Company" dropdown** to Careers and Blog once those pages exist (it
    currently only has About and Contact Us — see §4).
-8. **Get mobile Figma frames for the four service pages, About, Contact Us, and
-   Pricing**, or explicit sign-off that the current responsive adaptations (§4) are good
-   enough as-is.
-9. **Decide on a real backend/CMS story** if this moves past a static prototype —
-   nothing here has any dynamic behavior; it's markup and CSS only. A Contact Us form
-   was deliberately left out for exactly this reason (see §1) — revisit it once there's
-   a backend able to receive submissions.
+5. **Get mobile Figma frames for the four service pages, About, Contact Us, Pricing,
+   and Get Started**, or explicit sign-off that the current responsive adaptations (§4)
+   are good enough as-is.
+6. **Decide on a real backend/CMS story** if this moves past a static prototype —
+   nothing here has any dynamic behavior; it's markup and CSS only. Two things are
+   waiting on this specifically: the Contact Us form, deliberately left out (see §1),
+   and Get Started's "Continue", which currently just routes client-side to a service
+   page rather than submitting a real sign-up (see §1) — revisit both once there's a
+   backend able to receive submissions.
+
+**Decided, no longer open:** Contact Us will **not** get a hero — the newer
+`Design Collection` variant (full-bleed photo, man in red, arms outstretched) was
+considered and rejected; the page stays as built (§1). Its China-office "(GMT)" vs.
+every other office's "(GMT+1)" is still worth a confirm-it's-not-a-typo check with the
+owner, independent of the hero decision.

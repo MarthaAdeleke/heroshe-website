@@ -91,4 +91,17 @@
       });
     });
   }
+
+  /* ---- Get Started: service picker ----
+     Only present on get-started.html. Navigates to whichever service page's
+     radio is selected — this page has no backend, so "Continue" is just a
+     client-side router across the four existing service pages. */
+  var signupForm = document.getElementById('signup-form');
+  if (signupForm) {
+    signupForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var selected = signupForm.querySelector('input[name="service"]:checked');
+      if (selected) window.location.href = selected.value;
+    });
+  }
 })();
