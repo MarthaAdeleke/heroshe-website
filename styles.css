@@ -1992,7 +1992,7 @@ ul { margin: 0; padding: 0; list-style: none; }
   border-radius: 12px;
 }
 .bookform__row { display: flex; gap: 24px; }
-.bookform__submit { align-self: flex-start; white-space: normal; text-align: left; }
+.bookform__submit { display: block; align-self: flex-start; white-space: normal; text-align: left; }
 
 .bookconfirm {
   width: 100%;
