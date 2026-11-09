@@ -28,6 +28,12 @@ predating that commit has no history — the whole build landed as one import, s
 won't explain why any individual pre-existing decision was made. This file is the record
 for those; keep using it for decisions that the diff alone won't convey.
 
+**Deployed:** https://marthaadeleke.github.io/heroshe-website/ — GitHub Pages, served
+from `master` at the repo root (repo: `MarthaAdeleke/heroshe-website`, public). A push to
+`master` redeploys in about a minute; `.nojekyll` at the root disables Jekyll. This is a
+portfolio demo — a redesign/practice build, not an official Heroshe property — and
+should be labelled that way wherever it's linked.
+
 ---
 
 ## 1. What's built
@@ -478,10 +484,11 @@ second layer underneath.
   `.has-menu`/`.navmenu` pattern as "Products" — no open-state exists for it in Figma
   either, so it follows the site's own surface/shadow language, same as Products always
   did). No Blog — deliberately out of scope, see §1.
-- **Remaining links still pointing at `href="#"`**: only the five social icons in the
-  footer (X, LinkedIn, Facebook, Instagram, YouTube) — no real profiles to link to yet.
-  Everything else (footer Services column, "Get started", "Book A Call") is wired
-  (see §1/§6).
+- **No `href="#"` links remain.** Footer Follow column links to Heroshe's real X,
+  LinkedIn, Instagram and YouTube profiles (new tab, `rel="noopener noreferrer"`).
+  Facebook and the footer Blog link were removed outright — no profile/page to point at
+  — leaving Support with just Contact us. Everything else (footer Services column,
+  "Get started", "Book A Call") is wired (see §1/§6).
 
 ---
 
@@ -512,7 +519,8 @@ Roughly in priority order:
    Contact Us form (never built, see §1), Get Started's "Continue" (routes to a page,
    doesn't submit anything), Book A Call's confirmation (a static message, no booking
    is actually made), and Careers' "Email Us Your CV" (a `mailto:` link, not a real
-   application flow). This is the only item left on this list.
+   application flow). **Decided against for now:** the site is a static portfolio
+   demo, so none of this is being pursued. This is the only item left on this list.
 
 **Everything else that was open is now resolved:**
 - **Footer's Services column** (Shipping / Sourcing / Inventory Management / Stores
@@ -521,8 +529,6 @@ Roughly in priority order:
   Shipping/Sourcing self-linked from the original build, which is what confirmed this
   mapping rather than guessing it. The FAQ chevrons' action (opening the answer) was
   never actually unwired — that's what `<details>`/`<summary>` already does natively.
-  The five social icons (X, LinkedIn, Facebook, Instagram, YouTube) are still `#` —
-  there's no real profile to link to yet.
 - **Mobile Figma frames — explicitly not needed.** The owner has signed off on the
   current responsive adaptations across every page that never had a real mobile frame
   (About, Buy for Me, Buy for Others, Fulfil for Me, Contact Us, Pricing, Get Started,
@@ -534,3 +540,13 @@ Roughly in priority order:
   correct, unchanged), Guangzhou/China (GMT+8, China Standard Time — was wrongly
   GMT+1, which is what the audit had flagged as merely "worth confirming"; it turned
   out to be a real bug, not a style inconsistency).
+
+**Late fixes after deploy (2026-09/11):**
+- Homepage copy: "on it's way" → "on its way"; the Fulfil for me hero card and the
+  offerings card no longer swap to "Sell for me/Me" on mobile (the `d-only`/`m-only`
+  split was removed — the product is "Fulfil for Me" at every breakpoint).
+- `.btn` now sets `border: 0; font-family: inherit; cursor: pointer`. It's shared by
+  `<a>` and `<button>`; real buttons (Get Started "Continue", Book A Call confirm) were
+  getting the browser's black 2px outset border. Any new `<button class="btn">` is safe.
+- `.bookform__submit` is `display: block` — as `inline-flex` it split "Confirm Call —"
+  from the date span into two interleaved columns when wrapping.
